@@ -1,0 +1,13 @@
+# build files
+build
+*.class
+
+#Gradle
+.gradle
+settings.gradle
+gradle
+gradlew
+gradlew.bat
+
+#editor
+.idea
