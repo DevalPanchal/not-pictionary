@@ -17,6 +17,7 @@ dependencies {
 }
 
 javafx {
+    version = '15'
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
@@ -24,4 +25,12 @@ test {
     useJUnitPlatform()
 }
 
-mainClassName = "sample.Main"
+application {
+    mainClassName = "client.Main"
+}
+
+task server(type: JavaExec){
+    description = "Start Pictionary Server"
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'server.Main'
+}
