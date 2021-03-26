@@ -11,7 +11,7 @@ A simple multiplayer pictionary game (despite the name). Follows the standard pi
 ## Running
 Tested with Gradle 6.8.3, Java 15.0.2 and JavaFX 15
 
-- **Clone the repository: ** `git clone https://github.com/jkaterberg/not-pictionary.git`
-- **Enter the repository Directory: ** `cd not-pictionary`
-- **\*Start the Client: ** `gradle run`
-- **\*Start the Server: ** `gradle server`
+- **Clone the repository:** `git clone https://github.com/jkaterberg/not-pictionary.git`
+- **Enter the repository Directory:** `cd not-pictionary`
+- **Start the Server:** `gradle server`
+- **Start the Client:** `gradle run`
