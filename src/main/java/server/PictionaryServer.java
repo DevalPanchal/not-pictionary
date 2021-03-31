@@ -15,6 +15,7 @@ public class PictionaryServer {
 
     public PictionaryServer(){
         try{
+            //Start the server
             serverSocket = new ServerSocket(SERVER_PORT);
             System.out.println("SERVER IS RUNNING...");
             System.out.println("LISTENING ON PORT " + SERVER_PORT);
@@ -25,6 +26,7 @@ public class PictionaryServer {
             while(true){
                 clientSocket = serverSocket.accept();
 
+                // Create a new Player object
                 System.out.println("CONNECTED PLAYERS " + numPlayers);
                 players[numPlayers] = new Player(clientSocket);
                 players[numPlayers].pictionaryThread.start();
@@ -45,5 +47,9 @@ public class PictionaryServer {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args){
+        PictionaryServer server = new PictionaryServer();
     }
 }

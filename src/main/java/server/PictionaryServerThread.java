@@ -63,6 +63,7 @@ public class PictionaryServerThread extends Thread {
             return true;
         }
 
+        // break the message into command and arguments
         StringTokenizer st = new StringTokenizer(message);
         String command = st.nextToken();
         String args = null;
@@ -84,7 +85,24 @@ public class PictionaryServerThread extends Thread {
      * @return Thread status - true for exit, false for keep alive
      */
     private boolean processCommand(String command, String args) {
-        if(command.equalsIgnoreCase("EXIT")) {
+        // Tentative command required for functionality
+
+        // Get the username from the player
+        if(command.equalsIgnoreCase(("UID"))){
+            player.setUsername(args);
+            return false;
+        }
+        // Receive drawing points from the user
+        else if(command.equalsIgnoreCase("DRAW")){
+            // Need to know how the data is being sent before this can be
+            return false;
+        }
+        // Receive a message from the chat from the player
+        else if(command.equalsIgnoreCase("MSG")){
+            return false;
+        }
+        // Get the command to terminate from the player
+        else if(command.equalsIgnoreCase("EXIT")) {
             return true;
         }else{
             return false;
