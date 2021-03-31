@@ -1,0 +1,60 @@
+.main-wrapper {
+    -fx-background-image: url("./backgroundImage.png");
+}
+
+.canvas-container {
+    -fx-background-color: #f7f7f7;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}
+
+.addBtn {
+    -fx-border-radius: 15px;
+    -fx-background-color: #0275d8;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+}
+
+.addBtn:hover, .clear-btn:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.addBtn:pressed, .clear-btn:pressed {
+    -fx-background-color: #0275d8;
+    -fx-text-fill: #ffffff;
+}
+
+.clear-btn {
+    -fx-border-radius: 15px;
+    -fx-background-color: #d9534f;
+    -fx-text-fill: #fff;
+    -fx-font-size: 15px;
+}
+.colorpicker {
+    -fx-min-width: 200px;
+}
+
+.eraser-box:hover {
+    -fx-color: #d9534f;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.colorpicker:hover {
+    -fx-cursor: hand;
+}
+
+.guess-bar {
+    -fx-min-width: 250px;
+    -fx-min-height: 34px;
+    -fx-font-size: 15px;
+}
+
+.words {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5f5f5;
+}
