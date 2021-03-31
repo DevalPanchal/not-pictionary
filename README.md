@@ -2,7 +2,7 @@
 | :---------------- | :-----------: | --------: |
 | Justin Katerberg  | jkaterberg    | 100750264 |
 | Daniel Earley     | daniel-earley |           |
-| Deval Panchal     | DevalPanchal  |           |
+| Deval Panchal     | DevalPanchal  | 100744653 |
 | Justin Wong       | SJustinWong   |           |
 
 # Not-Pictionary
