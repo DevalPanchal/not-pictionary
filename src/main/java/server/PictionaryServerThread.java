@@ -89,12 +89,19 @@ public class PictionaryServerThread extends Thread {
 
         // Get the username from the player
         if(command.equalsIgnoreCase(("UID"))){
-            player.setUsername(args);
+            synchronized (player.getUsername()) {
+                player.setUsername(args);
+            }
             return false;
+        }
+        //Ensure the user has a username first
+        else if(player.getUsername() != null){
+            out.println("401 PREREQUISITE UID REQUEST NOT RECEIVED. DISCONNECTING");
+            return true;
         }
         // Receive drawing points from the user
         else if(command.equalsIgnoreCase("DRAW")){
-            // Need to know how the data is being sent before this can be
+            // Need to know how the data is being sent before this can be completed
             return false;
         }
         // Receive a message from the chat from the player
@@ -105,6 +112,7 @@ public class PictionaryServerThread extends Thread {
         else if(command.equalsIgnoreCase("EXIT")) {
             return true;
         }else{
+            out.println("400 REQUEST NOT UNDERSTOOD");
             return false;
         }
     }

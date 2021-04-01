@@ -15,13 +15,14 @@ public class Player {
     private String username;
     private boolean drawer;
 
-
     // Connection information
     public PictionaryServerThread pictionaryThread = null;
+    public Socket socket = null;
 
     //Constructors
     public Player(Socket socket){
         this.pictionaryThread = new PictionaryServerThread(socket, this);
+        this.socket = socket;
     }
 
     //setters
