@@ -1,10 +1,40 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url("https://fonts.googleapis.com/css2?family=Roboto");
+}
+
 .main-wrapper {
     -fx-background-image: url("./backgroundImage.png");
 }
 
 .canvas-container {
     -fx-background-color: #f7f7f7;
-    -fx-border-color: black;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 800px;
+    -fx-min-height: 600px;
+}
+
+.word-container {
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+}
+
+.words {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000;
+    -fx-font-family: 'Roboto';
+}
+
+.chat-sidebar {
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+}
+
+.toolbar {
+    -fx-border-color: #000;
     -fx-border-width: 1;
 }
 
@@ -12,6 +42,7 @@
     -fx-border-radius: 15px;
     -fx-background-color: #0275d8;
     -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
     -fx-font-size: 15px;
 }
 
@@ -22,17 +53,22 @@
     -fx-cursor: hand;
 }
 
-.addBtn:pressed, .clear-btn:pressed {
+.addBtn:pressed {
     -fx-background-color: #0275d8;
     -fx-text-fill: #ffffff;
 }
 
 .clear-btn {
+    -fx-font-weight: bold;
     -fx-border-radius: 15px;
     -fx-background-color: #d9534f;
     -fx-text-fill: #fff;
     -fx-font-size: 15px;
 }
+.clear-btn:pressed {
+    -fx-background-color: #d9534f;
+}
+
 .colorpicker {
     -fx-min-width: 200px;
 }
@@ -51,10 +87,4 @@
     -fx-min-width: 250px;
     -fx-min-height: 34px;
     -fx-font-size: 15px;
-}
-
-.words {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #f5f5f5;
 }

@@ -16,6 +16,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.CheckBox;
 import javafx.scene.canvas.GraphicsContext;
 
+
+
 import java.io.*;
 import java.net.Socket;
 
@@ -70,7 +72,5 @@ public class Controller {
     public void resetCanvas(GraphicsContext g) {
         g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
     }
-
-
 }
 

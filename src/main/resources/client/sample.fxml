@@ -10,19 +10,20 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.CheckBox?>
 <?import java.net.URL?>
+<?import javafx.scene.control.Spinner?>
 <GridPane fx:controller="client.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10" styleClass="main-wrapper">
 
-    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
-        <Label text="Words go here" styleClass="words"/>
+    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER" styleClass="word-container">
+        <Label text="Words Go Here" styleClass="words"/>
     </VBox>
 
     <GridPane  GridPane.rowIndex="1" GridPane.columnIndex="0" vgap="15" hgap="15">
         <VBox GridPane.rowIndex="1"  GridPane.columnIndex="0" styleClass="canvas-container">
-            <Canvas fx:id="mainCanvas" width="800" height="600" styleClass="canvas-container"/>
+            <Canvas fx:id="mainCanvas" width="800" height="600" styleClass="canvas"/>
         </VBox>
 
-        <ListView fx:id="chatMenu" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <ListView fx:id="chatMenu" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="chat-sidebar"/>
 
         <GridPane GridPane.rowIndex="2" GridPane.columnIndex="1" hgap="10">
             <TextField fx:id="chatInput" text="" promptText="Enter Guess..." GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="guess-bar" />
@@ -30,13 +31,14 @@
         </GridPane>
 
 
-        <VBox GridPane.rowIndex="2" GridPane.columnIndex="0">
+        <VBox GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="toolbar">
             <ToolBar>
                 <ColorPicker fx:id="colorPicker" styleClass="colorpicker" />
                 <TextField fx:id="brushSize" text="12"/>
                 <Label text="Eraser" />
                 <CheckBox fx:id="eraser" styleClass="eraser-box"/>
                 <Button fx:id="clearCanvas" text="Clear Canvas" styleClass="clear-btn" />
+<!--                <Spinner fx:id="BrushSize" min="5" max="25"></Spinner>-->
             </ToolBar>
         </VBox>
     </GridPane>
