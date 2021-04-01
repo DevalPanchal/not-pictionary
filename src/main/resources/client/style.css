@@ -48,12 +48,22 @@
     -fx-min-width: 350px;
 }
 
+.testCellTitle {
+    -fx-padding: 10px;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
 .testCell {
     -fx-padding: 10px;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 
+.testCell:hover {
+    -fx-background-color: #5bc0de;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
 
 .toolbar {
     -fx-border-color: #000;

@@ -28,8 +28,8 @@
 <!--            <ListView fx:id="playerMenu" styleClass="player-sidebar" GridPane.rowIndex="0" GridPane.columnIndex="0" />-->
             <ListView fx:id="chatMenu"  styleClass="chat-sidebar" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
             <VBox fx:id="playerView" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="testChat">
-                <HBox styleClass="testCell">
-                    <Label text="PLAYERS" />
+                <HBox styleClass="testCellTitle">
+                    <Label text="PLAYERS" textAlignment="CENTER" />
                 </HBox>
             </VBox>
         </GridPane>

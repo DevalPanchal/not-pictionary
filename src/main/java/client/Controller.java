@@ -55,7 +55,7 @@ public class Controller {
                 gc.clearRect(x, y, size, size);
             } else {
                 gc.setFill(colorPicker.getValue());
-                gc.fillRect(x, y, size, size);
+                gc.fillRoundRect(x, y, size, size, 10, 10);
             }
         });
         clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
