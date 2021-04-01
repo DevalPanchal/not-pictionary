@@ -71,6 +71,7 @@ public class Controller {
 
     public void resetTextField(TextField textField) {
         textField.setText("");
+        textField.requestFocus();
     }
 
     public void resetCanvas(GraphicsContext g) {
