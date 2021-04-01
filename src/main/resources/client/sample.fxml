@@ -11,8 +11,9 @@
 <?import javafx.scene.control.CheckBox?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.HBox?>
 <GridPane fx:controller="client.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10" styleClass="main-wrapper">
+          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10" styleClass="main-wrapper" >
 
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER" styleClass="word-container">
         <Label text="Words Go Here" styleClass="words"/>
@@ -23,22 +24,31 @@
             <Canvas fx:id="mainCanvas" width="800" height="600" styleClass="canvas"/>
         </VBox>
 
-        <ListView fx:id="chatMenu" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="chat-sidebar"/>
+        <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1" vgap="15">
+<!--            <ListView fx:id="playerMenu" styleClass="player-sidebar" GridPane.rowIndex="0" GridPane.columnIndex="0" />-->
+            <ListView fx:id="chatMenu"  styleClass="chat-sidebar" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <VBox fx:id="playerView" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="testChat">
+                <HBox styleClass="testCell">
+                    <Label text="PLAYERS" />
+                </HBox>
+            </VBox>
+        </GridPane>
 
         <GridPane GridPane.rowIndex="2" GridPane.columnIndex="1" hgap="10">
             <TextField fx:id="chatInput" text="" promptText="Enter Guess..." GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="guess-bar" />
             <Button fx:id="addBtn" text="Enter" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="addBtn" />
         </GridPane>
 
-
         <VBox GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="toolbar">
             <ToolBar>
-                <ColorPicker fx:id="colorPicker" styleClass="colorpicker" />
-                <TextField fx:id="brushSize" text="12"/>
-                <Label text="Eraser" />
-                <CheckBox fx:id="eraser" styleClass="eraser-box"/>
-                <Button fx:id="clearCanvas" text="Clear Canvas" styleClass="clear-btn" />
-<!--                <Spinner fx:id="BrushSize" min="5" max="25"></Spinner>-->
+                <GridPane GridPane.rowIndex="0" GridPane.columnIndex="0" hgap="10">
+                    <ColorPicker  fx:id="colorPicker" styleClass="colorpicker" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <!--                <TextField fx:id="brushSize" text="12"/>-->
+                    <Label text="Eraser" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                    <CheckBox fx:id="eraser" styleClass="eraser-box" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                    <Spinner fx:id="BrushSize" styleClass="numberpicker" min="5" max="25" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                    <Button fx:id="clearCanvas" text="Clear Canvas" styleClass="clear-btn" GridPane.rowIndex="0" GridPane.columnIndex="5" />
+                </GridPane>
             </ToolBar>
         </VBox>
     </GridPane>

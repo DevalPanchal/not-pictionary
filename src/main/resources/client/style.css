@@ -5,6 +5,7 @@
 
 .main-wrapper {
     -fx-background-image: url("./backgroundImage.png");
+    -fx-padding: 15px;
 }
 
 .canvas-container {
@@ -31,7 +32,28 @@
 .chat-sidebar {
     -fx-border-color: #000;
     -fx-border-width: 2;
+    -fx-min-width: 350px;
 }
+
+.player-sidebar {
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 350px;
+}
+
+.testChat {
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 350px;
+}
+
+.testCell {
+    -fx-padding: 10px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
 
 .toolbar {
     -fx-border-color: #000;
@@ -65,6 +87,7 @@
     -fx-text-fill: #fff;
     -fx-font-size: 15px;
 }
+
 .clear-btn:pressed {
     -fx-background-color: #d9534f;
 }
@@ -84,7 +107,11 @@
 }
 
 .guess-bar {
-    -fx-min-width: 250px;
+    -fx-min-width: 275px;
     -fx-min-height: 34px;
     -fx-font-size: 15px;
+}
+
+.numberpicker:hover {
+    -fx-cursor: hand;
 }
