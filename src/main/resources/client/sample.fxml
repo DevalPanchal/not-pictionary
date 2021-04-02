@@ -22,12 +22,18 @@
 
     <GridPane  GridPane.rowIndex="1" GridPane.columnIndex="0" vgap="15" hgap="15">
         <VBox GridPane.rowIndex="1"  GridPane.columnIndex="0" styleClass="canvas-container">
-            <Canvas fx:id="mainCanvas" width="800" height="600" styleClass="canvas"/>
+            <Canvas fx:id="mainCanvas" width="800" height="650" styleClass="canvas"/>
         </VBox>
 
         <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1" vgap="15">
 <!--            <ListView fx:id="playerMenu" styleClass="player-sidebar" GridPane.rowIndex="0" GridPane.columnIndex="0" />-->
             <ListView fx:id="chatMenu"  styleClass="chat-sidebar" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+<!--            <VBox fx:id="chatView" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="chatContainer">-->
+<!--                <HBox styleClass="testCellTitleChat">-->
+<!--                    <Label text="PLAYERS" textAlignment="CENTER" />-->
+<!--                </HBox>-->
+<!--            </VBox>-->
+
             <VBox fx:id="playerView" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="testChat">
                 <HBox styleClass="testCellTitle">
                     <Label text="PLAYERS" textAlignment="CENTER" />

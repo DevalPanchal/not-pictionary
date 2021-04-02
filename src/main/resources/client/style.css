@@ -12,8 +12,13 @@
     -fx-background-color: #f7f7f7;
     -fx-border-color: #000;
     -fx-border-width: 2;
-    -fx-min-width: 800px;
-    -fx-min-height: 600px;
+    -fx-max-width: 800px;
+    -fx-max-height: 600px;
+}
+
+.canvas {
+    -fx-max-width: 800px;
+    -fx-max-height: 600px;
 }
 
 .word-container {
@@ -63,6 +68,26 @@
 .testCell:hover {
     -fx-background-color: #5bc0de;
     -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.chatContainer {
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-height: 410px;
+    -fx-min-width: 350px;
+    -fx-overflow-y: scroll;
+}
+
+.testCellTitleChat {
+    -fx-padding: 10px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.testCellChat {
+    -fx-padding: 10px;
+    -fx-font-size: 12px;
 }
 
 .toolbar {

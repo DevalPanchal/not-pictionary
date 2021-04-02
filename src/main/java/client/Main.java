@@ -4,13 +4,24 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    private static Stage primaryStage;
+
+    public static void setPrimaryStage(Stage stage) {
+        Main.primaryStage = stage;
+    }
+
+    public static Stage getPrimaryStage () {
+        return Main.primaryStage;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.getIcons().add(new Image("client/icon.jpg"));
         primaryStage.setTitle("Not Pictionary");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();

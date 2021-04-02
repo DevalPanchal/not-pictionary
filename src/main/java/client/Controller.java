@@ -1,11 +1,21 @@
 package client;
 
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import javafx.scene.canvas.Canvas;
@@ -14,6 +24,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 
@@ -29,6 +40,7 @@ public class Controller {
     @FXML private TextField brushSize;
     @FXML private Button clearCanvas;
     @FXML private VBox playerView;
+    @FXML private VBox chatView;
 
     @FXML private Spinner<Integer> BrushSize;
 
@@ -42,7 +54,7 @@ public class Controller {
         }
         addBtn.setOnAction(actionEvent -> addChat());
 
-        mainCanvas.setOnMouseDragged(e -> {
+        mainCanvas.setOnMouseDragged((e) -> {
             int brushWeight = BrushSize.getValue();
 //            String brush = brushSize.getText();
             double size = Double.parseDouble(String.valueOf(brushWeight));
@@ -55,18 +67,24 @@ public class Controller {
                 gc.clearRect(x, y, size, size);
             } else {
                 gc.setFill(colorPicker.getValue());
-                gc.fillRoundRect(x, y, size, size, 10, 10);
+                gc.fillOval(x, y, size, size);
+                //gc.fillRoundRect(x, y, size, size, 10, 10);
             }
         });
-        clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
-    }
 
-    public void addChat() {
-        String message = chatInput.getText();
-        if (!message.equals("")) {
-            chatMenu.getItems().add(message);
-        }
-        resetTextField(chatInput);
+        mainCanvas.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+            int brushWeight = BrushSize.getValue();
+
+            Circle circle = new Circle(brushWeight, null);
+            circle.setStroke(colorPicker.getValue());
+            SnapshotParameters sp = new SnapshotParameters();
+            sp.setFill(Color.TRANSPARENT);
+            WritableImage image = circle.snapshot(sp, null);
+
+            mainCanvas.setCursor(new ImageCursor(image, brushWeight, brushWeight));
+        });
+
+        clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
     }
 
     public void resetTextField(TextField textField) {
@@ -76,6 +94,20 @@ public class Controller {
 
     public void resetCanvas(GraphicsContext g) {
         g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+    }
+
+    public void addChat() {
+        String message = chatInput.getText();
+//        Label label = new Label(message);
+
+        if (!message.equals("")) {
+            chatMenu.getItems().add(message);
+            resetTextField(chatInput);
+        }
+
+//        HBox chatNode = new HBox(label);
+//        chatNode.getStyleClass().add("testCellChat");
+//        chatView.getChildren().add(chatNode);
     }
 
     public void addNewPlayer(int i) {
