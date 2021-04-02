@@ -14,14 +14,29 @@ public class Lobby {
     @FXML private TextField playerName;
     @FXML private Button playButton;
 
+    public String name;
+
+    public Lobby() {}
+
     public void initialize() {
         playButton.setOnAction((e) -> {
-            playGame();
+            String name = getPlayer();
+            setPlayer(name);
+            if (!name.equals("")) {
+                System.out.println(name);
+                playGame();
+            } else {
+                System.out.println("Please enter a name.");
+            }
         });
     }
 
-    public void setPlayerName() {
-        String name = playerName.getText();
+    public void setPlayer(String name) {
+        this.name = name;
+    }
+
+    public String getPlayer() {
+        return playerName.getText();
     }
 
     public void playGame() {
@@ -30,7 +45,7 @@ public class Lobby {
         try {
             Stage mainGameStage = new Stage();
             Main.setPrimaryStage(mainGameStage);
-
+            setPlayer(getPlayer());
             Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
             mainGameStage.setScene(new Scene(root, 1200, 800));
             mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
@@ -41,7 +56,4 @@ public class Lobby {
             e.printStackTrace();
         }
     }
-
-
-
 }

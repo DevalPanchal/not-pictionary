@@ -47,12 +47,15 @@ public class Controller {
 
     @FXML private GraphicsContext gc;
 
+    Lobby lobby = new Lobby();
+
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
         //playerMenu.getItems().add("Players");
-        for (int i = 1; i <= 4; i++) {
-            addNewPlayer(i);
-        }
+
+        //System.out.println(lobby.getPlayer());
+        addPlayer(lobby.getPlayer());
+
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
         mainCanvas.setOnMouseDragged((e) -> {
@@ -84,7 +87,6 @@ public class Controller {
 
             mainCanvas.setCursor(new ImageCursor(image, brushWeight, brushWeight));
         });
-
         clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
     }
 
@@ -121,6 +123,13 @@ public class Controller {
             listView.scrollTo(items.size());
             resetTextField(chatInput);
         }
+    }
+
+    public void addPlayer(String name) {
+        Label label = new Label(name);
+        HBox PlayerNode = new HBox(label);
+        PlayerNode.getStyleClass().add("testCell");
+        playerView.getChildren().add(PlayerNode);
     }
 
     public void addNewPlayer(int i) {

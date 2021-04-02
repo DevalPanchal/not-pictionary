@@ -49,7 +49,7 @@
         <VBox GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="toolbar">
             <ToolBar>
                 <GridPane GridPane.rowIndex="0" GridPane.columnIndex="0" hgap="10">
-                    <ColorPicker  fx:id="colorPicker" styleClass="colorpicker" GridPane.rowIndex="0" GridPane.columnIndex="0" >
+                    <ColorPicker fx:id="colorPicker" styleClass="colorpicker" GridPane.rowIndex="0" GridPane.columnIndex="0" >
                         <value>
                             <Color blue="0" green="0" red="0"/>
                         </value>
