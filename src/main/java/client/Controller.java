@@ -1,6 +1,7 @@
 package client;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +53,7 @@ public class Controller {
         for (int i = 1; i <= 4; i++) {
             addNewPlayer(i);
         }
-        addBtn.setOnAction(actionEvent -> addChat());
+        addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
         mainCanvas.setOnMouseDragged((e) -> {
             int brushWeight = BrushSize.getValue();
@@ -96,18 +97,30 @@ public class Controller {
         g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
     }
 
-    public void addChat() {
+//    public void addChat() {
+//        String message = chatInput.getText();
+//
+//        if (!message.equals("")) {
+//            chatMenu.getItems().add(message);
+//            resetTextField(chatInput);
+//        }
+//
+//        autoScrollChat(chatMenu, message);
+////        Label label = new Label(message);
+////        HBox chatNode = new HBox(label);
+////        chatNode.getStyleClass().add("testCellChat");
+////        chatView.getChildren().add(chatNode);
+//    }
+
+    public void autoScrollChat(ListView<String> listView) {
         String message = chatInput.getText();
-//        Label label = new Label(message);
 
         if (!message.equals("")) {
-            chatMenu.getItems().add(message);
+            ObservableList<String> items = listView.getItems();
+            items.add(message);
+            listView.scrollTo(items.size());
             resetTextField(chatInput);
         }
-
-//        HBox chatNode = new HBox(label);
-//        chatNode.getStyleClass().add("testCellChat");
-//        chatView.getChildren().add(chatNode);
     }
 
     public void addNewPlayer(int i) {
