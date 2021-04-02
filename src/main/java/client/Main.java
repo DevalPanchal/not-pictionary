@@ -18,13 +18,18 @@ public class Main extends Application {
         return Main.primaryStage;
     }
 
+
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.getIcons().add(new Image("client/icon.jpg"));
+    public void start(Stage primaryStage) throws Exception {
+        setPrimaryStage(primaryStage);
+
+        Parent root = FXMLLoader.load(getClass().getResource("lobby.fxml"));
+        primaryStage.getIcons().add(new Image("client/public/icon.jpg"));
         primaryStage.setTitle("Not Pictionary");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {
