@@ -36,10 +36,11 @@ public class GameLogic {
      * This function iterates through a list of players and chooses 
      * the next player to be the drawer
      */
-    public void chooseDrawer(){
+    public Player chooseDrawer(){
         if (round == 1) {
             // If it's the first round then set player 1 to drawer 
             playerList.get(0).setDrawer(true);
+            return playerList.get(0);
         } else {
             // Check for current drawer
             for (int i = 0; i < playerList.size(); i++){
@@ -48,14 +49,17 @@ public class GameLogic {
                     // If last player is drawer, go back to first player
                     if (i + 1 > playerList.size()){
                         playerList.get(0).setDrawer(true);
+                        return playerList.get(0);
                     } else {
                         // Set next player to drawer and previous to not drawer
                         playerList.get(i+1).setDrawer(true);
                         playerList.get(i).setDrawer(false);
+                        return playerList.get(i+1);
                     }                
                 } 
             }
-        }    
+        }
+        return null;
     }
 
     /**

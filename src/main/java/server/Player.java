@@ -1,6 +1,12 @@
 package server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Class to hold the relevant information for a player
@@ -19,10 +25,42 @@ public class Player {
     public PictionaryServerThread pictionaryThread = null;
     public Socket socket = null;
 
+    private BufferedReader in = null;
+    private PrintWriter out = null;
+
+    //Communication queues
+    BlockingQueue<String> guesses;      //holds a queue of guesses the player has made
+    BlockingQueue<String> coordinates;  //holds a queue of coordinates to be sent to the client
+
     //Constructors
-    public Player(Socket socket){
-        this.pictionaryThread = new PictionaryServerThread(socket, this);
+    public Player(Socket socket) throws IOException {
+        this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        this.pictionaryThread = new PictionaryServerThread(out, in, this);
         this.socket = socket;
+    }
+
+    //Communication functions
+
+    /**
+     * method to send the player coordinates that need to be drawn
+     * @param newCoords new coordinates to be drawn.
+     */
+    public synchronized void sendCoords(ArrayList<String> newCoords) {
+        for(String coord : newCoords){
+            out.println("COORD " + coord);
+        }
+    }
+
+    /**
+     * method to send new messages to the client
+     * @param newMsg List of new messages to be sent
+     */
+    public synchronized void sendMsg(ArrayList<String> newMsg){
+        for(String msg : newMsg){
+            out.println("MSG " + msg);
+        }
     }
 
     //setters
@@ -42,4 +80,5 @@ public class Player {
     public boolean getDrawer(){
         return this.drawer;
     }
+
 }

@@ -3,6 +3,9 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PictionaryServer {
     private static final int SERVER_PORT = 9000;
@@ -22,8 +25,8 @@ public class PictionaryServer {
 
             players = new Player[MAX_PLAYERS];
 
-            //Listen for incoming connections
-            while(true){
+            //Listen for incoming connections until the max number of players is reached
+            while(players.length != 4){
                 clientSocket = serverSocket.accept();
 
                 // Create a new Player object
@@ -42,6 +45,52 @@ public class PictionaryServer {
                         i=0;
                         numPlayers--;
                     }
+                }
+            }
+
+            //Game time
+            GameLogic game = new GameLogic(Arrays.asList(players));
+            ArrayList<String> newMsgs = new ArrayList<>();
+            Player drawer = null;
+            boolean newRound = false;
+
+            while(true){
+                //pick the next player
+                drawer = game.chooseDrawer();
+
+                //game loop for each round
+                while(!newRound) {
+                    //get the drawing coordinates from the drawer
+                    ArrayList<String> newCoords = new ArrayList<>();
+                    drawer.coordinates.drainTo(newCoords);
+
+                    //Get the new messages sent by the players
+                    for(Player player : players){
+                        String newMsg;
+                        while((newMsg = player.guesses.take()) != null){
+                            newMsgs.add(player.getUsername() + ": " + newMsg);
+                            newRound = (game.isCorrectWord(newMsg));
+                        }
+                    }
+
+                    //get the requests/data from each player, send them new drawing coordinates
+                    for (Player player : players) {
+                        //Send the new messages to all the players
+                        player.sendMsg(newMsgs);
+
+                        //don't check the player's guesses if they are drawing
+                        if (!player.getDrawer()) {
+                            //check the guesses
+                            String guess;
+                            while ((guess = player.guesses.take()) != null) {
+                                newRound = game.isCorrectWord(guess);
+                                break;
+                            }
+                            player.sendCoords(newCoords);
+                        }
+                    }
+                    //Clear the new messages for the next time around
+                    newMsgs.clear();
                 }
             }
         } catch (IOException | InterruptedException e) {

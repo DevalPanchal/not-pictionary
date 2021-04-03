@@ -9,7 +9,6 @@ import java.util.StringTokenizer;
 
 public class PictionaryServerThread extends Thread {
     //Networking
-    protected Socket socket = null;
     protected PrintWriter out = null;
     protected BufferedReader in = null;
 
@@ -17,17 +16,11 @@ public class PictionaryServerThread extends Thread {
     Player player = null;
 
     //Constructor
-    public PictionaryServerThread(Socket socket, Player player){
+    public PictionaryServerThread(PrintWriter out, BufferedReader in, Player player){
         super();
-        this.socket = socket;
+        this.in = in;
+        this.out = out;
         this.player = player;
-
-        try{
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     //insertion point
@@ -40,13 +33,6 @@ public class PictionaryServerThread extends Thread {
         boolean exit = false;
         while(!exit){
             exit = processCommand();
-        }
-
-        //close the connection
-        try{
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("Could not disconnect from client");
         }
     }
 
@@ -101,11 +87,28 @@ public class PictionaryServerThread extends Thread {
         }
         // Receive drawing points from the user
         else if(command.equalsIgnoreCase("DRAW")){
-            // Need to know how the data is being sent before this can be completed
+            //add the new coordinate to the coordinate queue
+            //TODO: Add some verification that the coordinate is valid
+            try {
+                synchronized(player.coordinates) {
+                    player.coordinates.put(args);
+                }
+            }catch(InterruptedException e){
+                System.err.println("Could not add coordinate to player's coordinate queue");
+            }
             return false;
+
         }
         // Receive a message from the chat from the player
         else if(command.equalsIgnoreCase("MSG")){
+            //add the new message to the guess queue I guess?
+            try{
+                synchronized (player.guesses){
+                    player.guesses.put(args);
+                }
+            }catch(InterruptedException e){
+                System.err.println("Could not add message to guess queue");
+            }
             return false;
         }
         // Get the command to terminate from the player
