@@ -22,7 +22,10 @@ public class Lobby {
 
             if (!name.equals("")) {
                 Player.setName(name);
-                System.out.println(Player.getName());
+
+                Client client = new Client();
+                client.sendMessageToServer();
+
                 playGame();
             } else {
                 System.out.println("Please enter a name.");
@@ -36,7 +39,6 @@ public class Lobby {
         try {
             Stage mainGameStage = new Stage();
             Main.setPrimaryStage(mainGameStage);
-//            setPlayer(getPlayer());
             Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
             mainGameStage.setScene(new Scene(root, 1200, 800));
             mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
