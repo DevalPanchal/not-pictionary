@@ -47,14 +47,12 @@ public class Controller {
 
     @FXML private GraphicsContext gc;
 
-    Lobby lobby = new Lobby();
 
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
-        //playerMenu.getItems().add("Players");
 
-        //System.out.println(lobby.getPlayer());
-        addPlayer(lobby.getPlayer());
+        System.out.println(Player.getName());
+        addPlayer(Player.getName());
 
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
@@ -99,24 +97,8 @@ public class Controller {
         g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
     }
 
-//    public void addChat() {
-//        String message = chatInput.getText();
-//
-//        if (!message.equals("")) {
-//            chatMenu.getItems().add(message);
-//            resetTextField(chatInput);
-//        }
-//
-//        autoScrollChat(chatMenu, message);
-////        Label label = new Label(message);
-////        HBox chatNode = new HBox(label);
-////        chatNode.getStyleClass().add("testCellChat");
-////        chatView.getChildren().add(chatNode);
-//    }
-
     public void autoScrollChat(ListView<String> listView) {
         String message = chatInput.getText();
-
         if (!message.equals("")) {
             ObservableList<String> items = listView.getItems();
             items.add(message);
