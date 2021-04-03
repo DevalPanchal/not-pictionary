@@ -1,7 +1,7 @@
 | Group Member      | Username      | SID       |
 | :---------------- | :-----------: | --------: |
 | Justin Katerberg  | jkaterberg    | 100750264 |
-| Daniel Earley     | daniel-earley |           |
+| Daniel Earley     | daniel-earley | 100744960 |
 | Deval Panchal     | DevalPanchal  |           |
 | Justin Wong       | SJustinWong   |           |
 
