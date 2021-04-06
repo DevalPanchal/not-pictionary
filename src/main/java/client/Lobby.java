@@ -19,13 +19,10 @@ public class Lobby {
     public void initialize() {
         playButton.setOnAction((e) -> {
             String name = playerName.getText();
-
             if (!name.equals("")) {
                 Player.setName(name);
-
-                Client client = new Client();
-                client.sendMessageToServer();
-
+                //Client client = new Client();
+                //client.sendMessageToServer();
                 playGame();
             } else {
                 System.out.println("Please enter a name.");
@@ -44,7 +41,6 @@ public class Lobby {
             mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
             mainGameStage.setTitle("Not Pictionary");
             mainGameStage.show();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

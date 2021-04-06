@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -56,6 +57,26 @@ public class Controller {
 
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
+        mainCanvas.setOnMousePressed((e) -> {
+            int brushWeight = BrushSize.getValue();
+//            String brush = brushSize.getText();
+            double size = Double.parseDouble(String.valueOf(brushWeight));
+            double x = e.getX() - size / 2;
+            double y = e.getY() - size / 2;
+
+//            System.out.println(x + ", " + y);
+            Player.setPlayerX(x);
+            Player.setPlayerY(y);
+            System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
+            if (eraser.isSelected()) {
+                gc.clearRect(x, y, size, size);
+            } else {
+                gc.setFill(colorPicker.getValue());
+                gc.fillOval(x, y, size, size);
+                //gc.fillRoundRect(x, y, size, size, 10, 10);
+            }
+        });
+
         mainCanvas.setOnMouseDragged((e) -> {
             int brushWeight = BrushSize.getValue();
 //            String brush = brushSize.getText();
@@ -63,7 +84,9 @@ public class Controller {
             double x = e.getX() - size / 2;
             double y = e.getY() - size / 2;
 
-            System.out.println(x + ", " + y);
+            Player.setPlayerX(x);
+            Player.setPlayerY(y);
+            System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
 
             if (eraser.isSelected()) {
                 gc.clearRect(x, y, size, size);
@@ -114,12 +137,20 @@ public class Controller {
         playerView.getChildren().add(PlayerNode);
     }
 
-    public void addNewPlayer(int i) {
-        Label label = new Label("PLAYER " + i);
-        HBox playerNode = new HBox(label);
-        playerNode.getStyleClass().add("testCell");
-        playerView.getChildren().add(playerNode);
+    public void refresh() {
+        Stage currentStage = Main.getPrimaryStage();
+        currentStage.hide();
+        try {
+            Stage mainGameStage = new Stage();
+            Main.setPrimaryStage(mainGameStage);
+            Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
+            mainGameStage.setScene(new Scene(root, 1200, 800));
+            mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
+            mainGameStage.setTitle("Not Pictionary");
+            mainGameStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 }
 

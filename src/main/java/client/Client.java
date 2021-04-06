@@ -22,4 +22,17 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public void sendCoordinateToServer() {
+        try {
+            clientSocket = new Socket("localhost", 8080);
+            output = new PrintWriter(new BufferedOutputStream(clientSocket.getOutputStream()));
+
+            output.println(Player.getPlayerX());
+            output.println(Player.getPlayerY());
+            output.flush();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

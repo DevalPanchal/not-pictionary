@@ -18,8 +18,6 @@ public class Main extends Application {
         return Main.primaryStage;
     }
 
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         setPrimaryStage(primaryStage);
@@ -29,7 +27,6 @@ public class Main extends Application {
         primaryStage.setTitle("Not Pictionary");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
