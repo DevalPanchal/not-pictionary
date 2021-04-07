@@ -48,9 +48,10 @@ public class Controller {
 
     @FXML private GraphicsContext gc;
 
-
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
+
+        Client client = new Client();
 
         System.out.println(Player.getName());
         addPlayer(Player.getName());
@@ -67,7 +68,10 @@ public class Controller {
 //            System.out.println(x + ", " + y);
             Player.setPlayerX(x);
             Player.setPlayerY(y);
-            System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
+
+            // TODO: Change to sendCoordinateToServer()
+            client.sendCoords();
+
             if (eraser.isSelected()) {
                 gc.clearRect(x, y, size, size);
             } else {
@@ -86,7 +90,10 @@ public class Controller {
 
             Player.setPlayerX(x);
             Player.setPlayerY(y);
-            System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
+            //System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
+
+            // TODO: Change to sendCoordinateToServer()
+            client.sendCoords();
 
             if (eraser.isSelected()) {
                 gc.clearRect(x, y, size, size);

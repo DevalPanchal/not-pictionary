@@ -35,4 +35,8 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public void sendCoords() {
+        System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
+    }
 }
