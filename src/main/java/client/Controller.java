@@ -44,6 +44,7 @@ public class Controller {
     @FXML private GraphicsContext gc;
 
     Client client = null;
+    String background = "#f7f7f7";
 
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
@@ -65,16 +66,17 @@ public class Controller {
                 Player.setPlayerX(x);
                 Player.setPlayerY(y);
 
-                client.sendCoords();
-                client.getDrawSettings(size, colorPicker.getValue().toString());
 
                 if (eraser.isSelected()) {
-                    gc.clearRect(x, y, size, size);
+                    client.getDrawSettings(size, background);
+                    gc.setFill(Color.valueOf(background));
                 } else {
+                    client.getDrawSettings(size, colorPicker.getValue().toString());
                     gc.setFill(colorPicker.getValue());
-                    gc.fillOval(x, y, size, size);
                     //gc.fillRoundRect(x, y, size, size, 10, 10);
                 }
+                gc.fillOval(x, y, size, size);
+                client.sendCoords();
             }
         });
 
@@ -90,16 +92,14 @@ public class Controller {
                 Player.setPlayerY(y);
                 //System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
 
-                // TODO: Change to sendCoordinateToServer()
-                client.sendCoords();
-
                 if (eraser.isSelected()) {
-                    gc.clearRect(x, y, size, size);
+                    gc.setFill(Color.valueOf("#F7F7F7"));
                 } else {
                     gc.setFill(colorPicker.getValue());
-                    gc.fillOval(x, y, size, size);
                     //gc.fillRoundRect(x, y, size, size, 10, 10);
                 }
+                gc.fillOval(x, y, size, size);
+                client.sendCoords();
             }
         });
 
