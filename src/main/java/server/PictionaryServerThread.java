@@ -100,7 +100,6 @@ public class PictionaryServerThread extends Thread {
             synchronized (player) {
                 player.setClear(true);
             }
-            System.out.println("Received CLEAR");
 
             return false;
         }

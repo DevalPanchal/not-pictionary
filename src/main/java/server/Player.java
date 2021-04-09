@@ -60,7 +60,6 @@ public class Player {
         for(String coord : newCoords){
             String msg = "COORD " + coord;
             out.println(msg);
-            System.out.println(this.getUsername() + ": " + msg);
         }
     }
 
@@ -70,7 +69,6 @@ public class Player {
      */
     public synchronized void sendMsg(ArrayList<String> newMsg){
         for(String msg : newMsg){
-            System.out.println("Sending message to " + this.getUsername() + ": " + msg);
             out.println("MSG " + msg);
         }
     }
@@ -78,7 +76,6 @@ public class Player {
     public void sendClear(){
         String msg = "CLEAR";
         out.println(msg);
-        System.out.println(this.getUsername() + ": " + msg);
     }
 
     //setters
@@ -115,7 +112,6 @@ public class Player {
     }
 
     public synchronized void setClear(boolean clear) {
-        System.out.println("Setting clear to " + clear);
         this.clear = clear;
     }
 }
