@@ -70,21 +70,30 @@ public class ConnectionThread extends Thread{
             double y = Double.parseDouble(items[2].split(",")[1]);
             double size = Double.parseDouble(items[0]);
             Color color = Color.valueOf(items[1]);
-            System.out.println(color);
 
             //draw the point
             gc.setFill(color);
             gc.fillOval(x,y,size,size);
            return false;
-        }else if(command.equalsIgnoreCase("EXIT")){
+        }
+
+        else if(command.equalsIgnoreCase("EXIT")){
             return true;
-        }else if(command.equalsIgnoreCase("ROLE")) {
+        }
+
+        else if(command.equalsIgnoreCase("ROLE")) {
             if(args.equalsIgnoreCase("DRAWER")){
                 Player.setDrawer(true);
             }else{
                 Player.setDrawer(false);
             }
+            return false;
+        }
 
+        else if(command.equalsIgnoreCase("CLEAR")){
+            GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
+            gc.clearRect(0,0,client.getCanvas().getWidth(), client.getCanvas().getHeight());
+            System.out.println("Clearing...");
             return false;
         }
         else {

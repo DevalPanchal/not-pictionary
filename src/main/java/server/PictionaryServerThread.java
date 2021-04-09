@@ -95,6 +95,15 @@ public class PictionaryServerThread extends Thread {
             return false;
 
         }
+        //send a clear signal to all the other players
+        else if(command.equalsIgnoreCase("CLEAR")){
+            synchronized (player) {
+                player.setClear(true);
+            }
+            System.out.println("Received CLEAR");
+
+            return false;
+        }
         // Receive a message from the chat from the player
         else if(command.equalsIgnoreCase("MSG")){
             //add the new message to the guess queue I guess?

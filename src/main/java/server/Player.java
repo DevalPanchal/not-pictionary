@@ -35,9 +35,8 @@ public class Player {
     BlockingQueue<String> coordinates;  //holds a queue of coordinates to be sent to the client
 
     //Drawing settings
-    private double brushWeight = 5.0;
-    private String brushColor = "BLACK";
     private boolean erasing = false;
+    private volatile boolean clear = false;
 
     //Constructors
     public Player(Socket socket) throws IOException {
@@ -76,6 +75,12 @@ public class Player {
         }
     }
 
+    public void sendClear(){
+        String msg = "CLEAR";
+        out.println(msg);
+        System.out.println(this.getUsername() + ": " + msg);
+    }
+
     //setters
     public void setUsername(String username){
         this.username = username;
@@ -103,5 +108,14 @@ public class Player {
         }
         System.out.println(this.getUsername() + ": " + msg);
         out.println(msg);
+    }
+
+    public synchronized boolean isClear() {
+        return clear;
+    }
+
+    public synchronized void setClear(boolean clear) {
+        System.out.println("Setting clear to " + clear);
+        this.clear = clear;
     }
 }

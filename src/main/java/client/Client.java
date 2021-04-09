@@ -115,4 +115,9 @@ public class Client {
         this.brushWidth = width;
         this.brushColor = color;
     }
+
+    public void sendClear() {
+        networkOut.println("CLEAR");
+        System.out.println("Sending CLEAR");
+    }
 }

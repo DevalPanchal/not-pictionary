@@ -128,6 +128,7 @@ public class Controller {
     public void resetCanvas(GraphicsContext g) {
         if(Player.isDrawer()) {
             g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+            client.sendClear();
         }
     }
 

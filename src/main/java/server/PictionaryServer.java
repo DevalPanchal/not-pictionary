@@ -56,11 +56,12 @@ public class PictionaryServer {
             boolean newRound = false;
 
             while(true){
+
                 //pick the next player
                 drawer = game.chooseDrawer();
                 System.out.println(drawer.getUsername() + " is the drawer");
 
-                //tell the players which role they have
+                //tell the players which role they have, clear the canvas
                 for(Player player : players){
                     player.sendRole();
                 }
@@ -99,7 +100,13 @@ public class PictionaryServer {
                                     break;
                                 }
                             }
-                            player.sendCoords(newCoords);
+
+                            if (drawer.isClear()) {
+                                player.sendClear();
+                                drawer.setClear(false);
+                            } else {
+                                player.sendCoords(newCoords);
+                            }
                         }
                     }
                     //Clear the new messages for the next time around
