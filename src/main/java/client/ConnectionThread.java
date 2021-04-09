@@ -1,6 +1,7 @@
 package client;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,11 +62,19 @@ public class ConnectionThread extends Thread{
      */
     private boolean processCommand(String command, String args){
         if(command.equalsIgnoreCase("COORD")){
-            System.out.println("Received coords " + args);
             GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
-            double x = Double.parseDouble(args.split(",")[0]);
-            double y = Double.parseDouble(args.split(",")[1]);
-            gc.fillOval(x,y,15,15);
+
+            //parse the location and settings of coordinate
+            String[] items = args.split(" ");
+            double x = Double.parseDouble(items[2].split(",")[0]);
+            double y = Double.parseDouble(items[2].split(",")[1]);
+            double size = Double.parseDouble(items[0]);
+            Color color = Color.valueOf(items[1]);
+            System.out.println(color);
+
+            //draw the point
+            gc.setFill(color);
+            gc.fillOval(x,y,size,size);
            return false;
         }else if(command.equalsIgnoreCase("EXIT")){
             return true;

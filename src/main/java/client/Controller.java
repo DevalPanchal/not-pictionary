@@ -1,8 +1,6 @@
 package client;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
@@ -26,9 +24,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
-import java.io.*;
-import java.net.Socket;
 
 public class Controller {
     @FXML private TextField chatInput;
@@ -70,8 +65,8 @@ public class Controller {
                 Player.setPlayerX(x);
                 Player.setPlayerY(y);
 
-                // TODO: Change to sendCoordinateToServer()
                 client.sendCoords();
+                client.getDrawSettings(size, colorPicker.getValue().toString());
 
                 if (eraser.isSelected()) {
                     gc.clearRect(x, y, size, size);

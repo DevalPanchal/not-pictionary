@@ -34,6 +34,11 @@ public class Player {
     BlockingQueue<String> guesses;      //holds a queue of guesses the player has made
     BlockingQueue<String> coordinates;  //holds a queue of coordinates to be sent to the client
 
+    //Drawing settings
+    private double brushWeight = 5.0;
+    private String brushColor = "BLACK";
+    private boolean erasing = false;
+
     //Constructors
     public Player(Socket socket) throws IOException {
         this.out = new PrintWriter(socket.getOutputStream(), true);

@@ -18,6 +18,8 @@ public class Client {
     private ConnectionThread thread = null;
 
     private Canvas canvas = null;
+    private String brushColor;
+    private double brushWidth;
 
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
         this.SERVER_ADDRESS = SERVER_ADDRESS;
@@ -70,7 +72,15 @@ public class Client {
      * Sends coordinates of current stroke to server as CSV
      */
     public void sendCoords() {
-        this.networkOut.printf("DRAW " + Player.getPlayerX() + "," + Player.getPlayerY() + "\n");
+        if(this.brushColor == null){
+            this.brushColor = "0x000000ff";
+        }
+
+        this.networkOut.printf("DRAW " +
+                this.brushWidth + " " +
+                this.brushColor + " " +
+                Player.getPlayerX() + "," +
+                Player.getPlayerY() + "\n");
     }
 
     public void cleanup() {
@@ -89,5 +99,20 @@ public class Client {
 
     public Canvas getCanvas(){
         return this.canvas;
+    }
+
+    public void sendDrawSettings(){
+        //send brush width
+        String msg = "BRUSH " + this.brushWidth;
+        networkOut.println(msg);
+
+        //send brush color
+        msg = "COLOR " + this.brushColor;
+        networkOut.println(msg);
+    }
+
+    public void getDrawSettings(double width, String color){
+        this.brushWidth = width;
+        this.brushColor = color;
     }
 }
