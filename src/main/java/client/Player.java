@@ -2,6 +2,7 @@ package client;
 
 public class Player {
     private static String name;
+    private static boolean Drawer = false;
     private static double playerX;
     private static double playerY;
 
@@ -35,5 +36,13 @@ public class Player {
 
     public static void setPlayerY(double playerY) {
         Player.playerY = playerY;
+    }
+
+    public static boolean isDrawer() {
+        return Drawer;
+    }
+
+    public static void setDrawer(boolean drawer) {
+        Player.Drawer = drawer;
     }
 }

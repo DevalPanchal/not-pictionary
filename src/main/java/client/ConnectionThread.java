@@ -26,6 +26,10 @@ public class ConnectionThread extends Thread{
         System.out.println("terminated thread");
     }
 
+    /**
+     * Method to break the request from the client into command and arguments
+     * @return status of thread - true for exit, false for keep alive
+     */
     private boolean processCommand() {
         String message = null;
         try{
@@ -44,6 +48,17 @@ public class ConnectionThread extends Thread{
         return processCommand(command,args);
     }
 
+    /**
+     * Method to process the commands sent from the client
+     * Current full list of commands:
+     *      EXIT - closes the connection with the client and ends the thread
+     *
+     * TODO: Implement commands for core functionality
+     *
+     * @param command Command issued from the client
+     * @param args Additional arguments
+     * @return Thread status - true for exit, false for keep alive
+     */
     private boolean processCommand(String command, String args){
         if(command.equalsIgnoreCase("COORD")){
             System.out.println("Received coords " + args);
@@ -54,8 +69,17 @@ public class ConnectionThread extends Thread{
            return false;
         }else if(command.equalsIgnoreCase("EXIT")){
             return true;
-        }else{
+        }else if(command.equalsIgnoreCase("ROLE")) {
+            if(args.equalsIgnoreCase("DRAWER")){
+                Player.setDrawer(true);
+            }else{
+                Player.setDrawer(false);
+            }
+
             return false;
+        }
+        else {
+                return false;
         }
     }
 }

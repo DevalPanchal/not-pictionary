@@ -89,4 +89,14 @@ public class Player {
         return this.drawer;
     }
 
+    public void sendRole() {
+        String msg = "ROLE ";
+        if(this.getDrawer()){
+            msg += "DRAWER";
+        }else{
+            msg += "GUESSER";
+        }
+        System.out.println(this.getUsername() + ": " + msg);
+        out.println(msg);
+    }
 }

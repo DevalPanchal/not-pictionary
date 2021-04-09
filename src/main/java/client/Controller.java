@@ -59,62 +59,69 @@ public class Controller {
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
         mainCanvas.setOnMousePressed((e) -> {
-            int brushWeight = BrushSize.getValue();
+            if(Player.isDrawer()) {
+                int brushWeight = BrushSize.getValue();
 //            String brush = brushSize.getText();
-            double size = Double.parseDouble(String.valueOf(brushWeight));
-            double x = e.getX() - size / 2;
-            double y = e.getY() - size / 2;
+                double size = Double.parseDouble(String.valueOf(brushWeight));
+                double x = e.getX() - size / 2;
+                double y = e.getY() - size / 2;
 
 //            System.out.println(x + ", " + y);
-            Player.setPlayerX(x);
-            Player.setPlayerY(y);
+                Player.setPlayerX(x);
+                Player.setPlayerY(y);
 
-            // TODO: Change to sendCoordinateToServer()
-            client.sendCoords();
+                // TODO: Change to sendCoordinateToServer()
+                client.sendCoords();
 
-            if (eraser.isSelected()) {
-                gc.clearRect(x, y, size, size);
-            } else {
-                gc.setFill(colorPicker.getValue());
-                gc.fillOval(x, y, size, size);
-                //gc.fillRoundRect(x, y, size, size, 10, 10);
+                if (eraser.isSelected()) {
+                    gc.clearRect(x, y, size, size);
+                } else {
+                    gc.setFill(colorPicker.getValue());
+                    gc.fillOval(x, y, size, size);
+                    //gc.fillRoundRect(x, y, size, size, 10, 10);
+                }
             }
         });
 
         mainCanvas.setOnMouseDragged((e) -> {
-            int brushWeight = BrushSize.getValue();
+            if(Player.isDrawer()) {
+                int brushWeight = BrushSize.getValue();
 //            String brush = brushSize.getText();
-            double size = Double.parseDouble(String.valueOf(brushWeight));
-            double x = e.getX() - size / 2;
-            double y = e.getY() - size / 2;
+                double size = Double.parseDouble(String.valueOf(brushWeight));
+                double x = e.getX() - size / 2;
+                double y = e.getY() - size / 2;
 
-            Player.setPlayerX(x);
-            Player.setPlayerY(y);
-            //System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
+                Player.setPlayerX(x);
+                Player.setPlayerY(y);
+                //System.out.printf("PlayerX: %f | PlayerY: %f\n",Player.getPlayerX(), Player.getPlayerY());
 
-            // TODO: Change to sendCoordinateToServer()
-            client.sendCoords();
+                // TODO: Change to sendCoordinateToServer()
+                client.sendCoords();
 
-            if (eraser.isSelected()) {
-                gc.clearRect(x, y, size, size);
-            } else {
-                gc.setFill(colorPicker.getValue());
-                gc.fillOval(x, y, size, size);
-                //gc.fillRoundRect(x, y, size, size, 10, 10);
+                if (eraser.isSelected()) {
+                    gc.clearRect(x, y, size, size);
+                } else {
+                    gc.setFill(colorPicker.getValue());
+                    gc.fillOval(x, y, size, size);
+                    //gc.fillRoundRect(x, y, size, size, 10, 10);
+                }
             }
         });
 
         mainCanvas.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
-            int brushWeight = BrushSize.getValue();
+            if(Player.isDrawer()) {
+                int brushWeight = BrushSize.getValue();
 
-            Circle circle = new Circle(brushWeight, null);
-            circle.setStroke(colorPicker.getValue());
-            SnapshotParameters sp = new SnapshotParameters();
-            sp.setFill(Color.TRANSPARENT);
-            WritableImage image = circle.snapshot(sp, null);
+                Circle circle = new Circle(brushWeight, null);
+                circle.setStroke(colorPicker.getValue());
+                SnapshotParameters sp = new SnapshotParameters();
+                sp.setFill(Color.TRANSPARENT);
+                WritableImage image = circle.snapshot(sp, null);
 
-            mainCanvas.setCursor(new ImageCursor(image, brushWeight, brushWeight));
+                mainCanvas.setCursor(new ImageCursor(image, brushWeight, brushWeight));
+            }
         });
+
         clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
     }
 
@@ -124,7 +131,9 @@ public class Controller {
     }
 
     public void resetCanvas(GraphicsContext g) {
-        g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+        if(Player.isDrawer()) {
+            g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+        }
     }
 
     public void autoScrollChat(ListView<String> listView) {

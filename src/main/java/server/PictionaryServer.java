@@ -60,6 +60,11 @@ public class PictionaryServer {
                 drawer = game.chooseDrawer();
                 System.out.println(drawer.getUsername() + " is the drawer");
 
+                //tell the players which role they have
+                for(Player player : players){
+                    player.sendRole();
+                }
+
                 //game loop for each round
                 while(!newRound) {
                     //get the drawing coordinates from the drawer
