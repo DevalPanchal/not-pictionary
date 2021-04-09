@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PictionaryServer {
     private static final int SERVER_PORT = 9000;
-    private static final int MAX_PLAYERS = 4;
+    private static final int MAX_PLAYERS = 2;
 
     protected Socket clientSocket = null;
     protected ServerSocket serverSocket = null;
@@ -26,11 +26,10 @@ public class PictionaryServer {
             players = new Player[MAX_PLAYERS];
 
             //Listen for incoming connections until the max number of players is reached
-            while(players.length != 4){
+            while(numPlayers != MAX_PLAYERS){
                 clientSocket = serverSocket.accept();
 
                 // Create a new Player object
-                System.out.println("CONNECTED PLAYERS " + numPlayers);
                 players[numPlayers] = new Player(clientSocket);
                 players[numPlayers].pictionaryThread.start();
                 numPlayers++;
@@ -46,9 +45,11 @@ public class PictionaryServer {
                         numPlayers--;
                     }
                 }
+                System.out.println("CONNECTED PLAYERS " + numPlayers);
             }
 
             //Game time
+            System.out.println("Enough players for a game");
             GameLogic game = new GameLogic(Arrays.asList(players));
             ArrayList<String> newMsgs = new ArrayList<>();
             Player drawer = null;
@@ -57,6 +58,7 @@ public class PictionaryServer {
             while(true){
                 //pick the next player
                 drawer = game.chooseDrawer();
+                System.out.println(drawer.getUsername() + " is the drawer");
 
                 //game loop for each round
                 while(!newRound) {
@@ -64,14 +66,18 @@ public class PictionaryServer {
                     ArrayList<String> newCoords = new ArrayList<>();
                     drawer.coordinates.drainTo(newCoords);
 
+                    /*
                     //Get the new messages sent by the players
                     for(Player player : players){
+
                         String newMsg;
-                        while((newMsg = player.guesses.take()) != null){
+                        while(!player.guesses.isEmpty()){
+                            newMsg = player.guesses.take();
                             newMsgs.add(player.getUsername() + ": " + newMsg);
-                            newRound = (game.isCorrectWord(newMsg));
+                            newRound = game.isCorrectWord(newMsg);
                         }
                     }
+                    */
 
                     //get the requests/data from each player, send them new drawing coordinates
                     for (Player player : players) {
@@ -82,9 +88,11 @@ public class PictionaryServer {
                         if (!player.getDrawer()) {
                             //check the guesses
                             String guess;
-                            while ((guess = player.guesses.take()) != null) {
-                                newRound = game.isCorrectWord(guess);
-                                break;
+                            while (!player.guesses.isEmpty()) {
+                                newRound = game.isCorrectWord(player.guesses.take());
+                                if(newRound){
+                                    break;
+                                }
                             }
                             player.sendCoords(newCoords);
                         }

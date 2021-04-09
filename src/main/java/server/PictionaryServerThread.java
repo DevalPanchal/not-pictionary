@@ -2,9 +2,7 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.StringTokenizer;
 
 public class PictionaryServerThread extends Thread {
@@ -27,13 +25,14 @@ public class PictionaryServerThread extends Thread {
     @Override
     public void run(){
         //send confirmation of connection
-        out.println("CONNECTED 200 OK");
+        //out.println("CONNECTED 200 OK");
 
         //Process commands until the client terminates the connection
         boolean exit = false;
         while(!exit){
             exit = processCommand();
         }
+        System.out.println("terminated thread");
     }
 
     /**
@@ -75,14 +74,13 @@ public class PictionaryServerThread extends Thread {
 
         // Get the username from the player
         if(command.equalsIgnoreCase(("UID"))){
-            synchronized (player.getUsername()) {
-                player.setUsername(args);
-            }
+            player.setUsername(args);
             return false;
         }
         //Ensure the user has a username first
-        else if(player.getUsername() != null){
+        else if(player.getUsername() == null){
             out.println("401 PREREQUISITE UID REQUEST NOT RECEIVED. DISCONNECTING");
+            System.out.println("NO UID");
             return true;
         }
         // Receive drawing points from the user
@@ -90,10 +88,8 @@ public class PictionaryServerThread extends Thread {
             //add the new coordinate to the coordinate queue
             //TODO: Add some verification that the coordinate is valid
             try {
-                synchronized(player.coordinates) {
-                    player.coordinates.put(args);
-                }
-            }catch(InterruptedException e){
+                player.coordinates.put(args);
+            }catch(InterruptedException e) {
                 System.err.println("Could not add coordinate to player's coordinate queue");
             }
             return false;
@@ -103,9 +99,7 @@ public class PictionaryServerThread extends Thread {
         else if(command.equalsIgnoreCase("MSG")){
             //add the new message to the guess queue I guess?
             try{
-                synchronized (player.guesses){
-                    player.guesses.put(args);
-                }
+                player.guesses.put(args);
             }catch(InterruptedException e){
                 System.err.println("Could not add message to guess queue");
             }

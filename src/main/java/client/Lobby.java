@@ -24,6 +24,9 @@ public class Lobby {
     //Networking
     Socket socket = null;
 
+    String SERVER_ADDRESS = "localhost";
+    int SERVER_PORT = 9000;
+
     PrintWriter networkOut = null;
     BufferedReader networkIn = null;
 
@@ -34,49 +37,40 @@ public class Lobby {
             String name = playerName.getText();
             if (!name.equals("")) {
                 Player.setName(name);
-                //Client client = new Client();
-                //client.sendMessageToServer();
-                playGame();
+                Client client = new Client(SERVER_ADDRESS, SERVER_PORT);
+
+                System.out.println("Created client object");
+                playGame(client);
             } else {
                 System.out.println("Please enter a name.");
             }
         });
     }
 
-    public void playGame() {
+    public void playGame(Client client) {
         Stage currentStage = Main.getPrimaryStage();
         currentStage.hide();
         try {
-            Stage mainGameStage = new Stage();
-            Main.setPrimaryStage(mainGameStage);
-            Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
-            mainGameStage.setScene(new Scene(root, 1200, 800));
-            mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
-            mainGameStage.setTitle("Not Pictionary");
-            mainGameStage.show();
+            boolean connected;
+
+            if((connected = client.isConnected())) {
+                Stage mainGameStage = new Stage();
+                Main.setPrimaryStage(mainGameStage);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
+                Parent root = loader.load();
+                Controller mainController = loader.getController();
+                mainController.setClient(client);
+
+                mainGameStage.setScene(new Scene(root, 1200, 800));
+                mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
+                mainGameStage.setTitle("Not Pictionary");
+                mainGameStage.show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean connectToServer(String SERVER_ADDRESS, int SERVER_PORT){
-        try {
-            socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-        }catch(UnknownHostException e){
-            System.err.println("Error: Unknown Host");
-            return false;
-        } catch (IOException e) {
-            System.err.println("IOException while connecting to server");
-            return false;
-        }
-        try{
-            networkIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            networkOut = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            System.err.println("IOException while opening network streams");
-            return false;
-        }
 
-        return true;
-    }
 }

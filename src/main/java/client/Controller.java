@@ -48,10 +48,10 @@ public class Controller {
 
     @FXML private GraphicsContext gc;
 
+    Client client = null;
+
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
-
-        Client client = new Client();
 
         System.out.println(Player.getName());
         addPlayer(Player.getName());
@@ -159,5 +159,11 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
+    public void setClient(Client client){
+        this.client = client;
+        this.client.setCanvas(mainCanvas);
+    }
+
 }
 

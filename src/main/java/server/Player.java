@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class to hold the relevant information for a player
@@ -19,7 +21,7 @@ import java.util.concurrent.BlockingQueue;
 public class Player {
     //Player properties
     private String username;
-    private boolean drawer;
+    private boolean drawer = false;
 
     // Connection information
     public PictionaryServerThread pictionaryThread = null;
@@ -39,6 +41,9 @@ public class Player {
 
         this.pictionaryThread = new PictionaryServerThread(out, in, this);
         this.socket = socket;
+
+        this.guesses = new LinkedBlockingQueue<>();
+        this.coordinates = new LinkedBlockingQueue<>();
     }
 
     //Communication functions
@@ -49,7 +54,9 @@ public class Player {
      */
     public synchronized void sendCoords(ArrayList<String> newCoords) {
         for(String coord : newCoords){
-            out.println("COORD " + coord);
+            String msg = "COORD " + coord;
+            out.println(msg);
+            System.out.println(this.getUsername() + ": " + msg);
         }
     }
 
@@ -59,6 +66,7 @@ public class Player {
      */
     public synchronized void sendMsg(ArrayList<String> newMsg){
         for(String msg : newMsg){
+            System.out.println("Sending message to " + this.getUsername() + ": " + msg);
             out.println("MSG " + msg);
         }
     }
