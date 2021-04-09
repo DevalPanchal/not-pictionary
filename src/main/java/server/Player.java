@@ -25,7 +25,7 @@ public class Player {
 
     // Connection information
     public PictionaryServerThread pictionaryThread = null;
-    public Socket socket = null;
+    private Socket socket = null;
 
     private BufferedReader in = null;
     private PrintWriter out = null;
@@ -35,17 +35,19 @@ public class Player {
     BlockingQueue<String> coordinates;  //holds a queue of coordinates to be sent to the client
 
     //Drawing settings
-    private boolean erasing = false;
     private volatile boolean clear = false;
 
     //Constructors
     public Player(Socket socket) throws IOException {
+        //setup the output streams
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        this.pictionaryThread = new PictionaryServerThread(out, in, this);
+        //start the listener thread
+        this.pictionaryThread = new PictionaryServerThread(this);
         this.socket = socket;
 
+        //initialize queues for guesses and coordinates
         this.guesses = new LinkedBlockingQueue<>();
         this.coordinates = new LinkedBlockingQueue<>();
     }
@@ -73,29 +75,18 @@ public class Player {
         }
     }
 
+    /**
+     * Method to send a command to the player to clear their screen
+     */
     public void sendClear(){
         String msg = "CLEAR";
         out.println(msg);
     }
 
-    //setters
-    public void setUsername(String username){
-        this.username = username;
-    }
 
-    public void setDrawer(boolean drawer){
-        this.drawer = drawer;
-    }
-
-    //getters
-    public String getUsername(){
-        return this.username;
-    }
-
-    public boolean getDrawer(){
-        return this.drawer;
-    }
-
+    /**
+     * Method to notify the client which role they are to play
+     */
     public void sendRole() {
         String msg = "ROLE ";
         if(this.getDrawer()){
@@ -107,11 +98,47 @@ public class Player {
         out.println(msg);
     }
 
-    public synchronized boolean isClear() {
-        return clear;
+    //setters
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public void setDrawer(boolean drawer){
+        this.drawer = drawer;
     }
 
     public synchronized void setClear(boolean clear) {
         this.clear = clear;
     }
+
+    public void setNetworkReader(BufferedReader in) {
+        this.in = in;
+    }
+    //getters
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public boolean getDrawer(){
+        return this.drawer;
+    }
+
+    public synchronized boolean isClear() {
+        return clear;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public BufferedReader getNetworkReader() {
+        return in;
+    }
+
+    public PrintWriter getNetworkWriter(){
+        return out;
+    }
+
 }

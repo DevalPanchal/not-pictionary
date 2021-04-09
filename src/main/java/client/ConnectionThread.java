@@ -11,6 +11,7 @@ public class ConnectionThread extends Thread{
     private BufferedReader in = null;
     Client client = null;
 
+    //Constructor
     ConnectionThread(Client client){
         super();
         this.in = client.networkIn;
@@ -54,17 +55,16 @@ public class ConnectionThread extends Thread{
      * Current full list of commands:
      *      EXIT - closes the connection with the client and ends the thread
      *
-     * TODO: Implement commands for core functionality
-     *
      * @param command Command issued from the client
      * @param args Additional arguments
      * @return Thread status - true for exit, false for keep alive
      */
     private boolean processCommand(String command, String args){
+        //Receive coordinates to draw from the server
         if(command.equalsIgnoreCase("COORD")){
             GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
 
-            //parse the location and settings of coordinate
+            //parse the attributes of the point
             String[] items = args.split(" ");
             double x = Double.parseDouble(items[2].split(",")[0]);
             double y = Double.parseDouble(items[2].split(",")[1]);
@@ -77,10 +77,8 @@ public class ConnectionThread extends Thread{
            return false;
         }
 
-        else if(command.equalsIgnoreCase("EXIT")){
-            return true;
-        }
 
+        //Save the role assigned by the server
         else if(command.equalsIgnoreCase("ROLE")) {
             if(args.equalsIgnoreCase("DRAWER")){
                 Player.setDrawer(true);
@@ -90,14 +88,23 @@ public class ConnectionThread extends Thread{
             return false;
         }
 
+        //Clear the current canvas
         else if(command.equalsIgnoreCase("CLEAR")){
             GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
             gc.clearRect(0,0,client.getCanvas().getWidth(), client.getCanvas().getHeight());
             System.out.println("Clearing...");
             return false;
         }
+
+        //Exit the game
+        else if(command.equalsIgnoreCase("EXIT")){
+            return true;
+        }
+
+        //None of the above
         else {
-                return false;
+            System.out.println("Could not understand request " + command + " " + args);
+            return false;
         }
     }
 }

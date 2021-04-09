@@ -14,10 +14,10 @@ public class PictionaryServerThread extends Thread {
     Player player = null;
 
     //Constructor
-    public PictionaryServerThread(PrintWriter out, BufferedReader in, Player player){
+    public PictionaryServerThread(Player player){
         super();
-        this.in = in;
-        this.out = out;
+        this.in = player.getNetworkReader();
+        this.out = player.getNetworkWriter();
         this.player = player;
     }
 
@@ -63,27 +63,23 @@ public class PictionaryServerThread extends Thread {
      * Current full list of commands:
      *      EXIT - closes the connection with the client and ends the thread
      *
-     * TODO: Implement commands for core functionality
-     *
      * @param command Command issued from the client
      * @param args Additional arguments
      * @return Thread status - true for exit, false for keep alive
      */
     private boolean processCommand(String command, String args) {
-        // Tentative command required for functionality
-
         // Get the username from the player
         if(command.equalsIgnoreCase(("UID"))){
             player.setUsername(args);
             return false;
         }
-        //Ensure the user has a username first
+        //Ensure the user has a username. If they don't, requests are invalid and the server disconnects
         else if(player.getUsername() == null){
             out.println("401 PREREQUISITE UID REQUEST NOT RECEIVED. DISCONNECTING");
             System.out.println("NO UID");
             return true;
         }
-        // Receive drawing points from the user
+        // Receive drawing points from the user, add them to the player's drawing queue
         else if(command.equalsIgnoreCase("DRAW")){
             //add the new coordinate to the coordinate queue
             //TODO: Add some verification that the coordinate is valid
@@ -95,7 +91,7 @@ public class PictionaryServerThread extends Thread {
             return false;
 
         }
-        //send a clear signal to all the other players
+        // Set the clear flag of the player to true.
         else if(command.equalsIgnoreCase("CLEAR")){
             synchronized (player) {
                 player.setClear(true);

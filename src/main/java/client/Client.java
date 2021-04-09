@@ -7,24 +7,27 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
+    //Connection Information
+    String SERVER_ADDRESS = "localhost";
+    int SERVER_PORT = 9000;
     protected Socket clientSocket = null;
     protected PrintWriter networkOut = null;
     protected BufferedReader networkIn = null;
-
-    String SERVER_ADDRESS = "localhost";
-    int SERVER_PORT = 9000;
-
     private boolean connected = false;
     private ConnectionThread thread = null;
 
+    //Game/client attributes
     private Canvas canvas = null;
     private String brushColor;
     private double brushWidth;
 
+    //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
+        //Set the server port and address
         this.SERVER_ADDRESS = SERVER_ADDRESS;
         this.SERVER_PORT = SERVER_PORT;
 
+        //Connect to server and start the connection thread
         connectToServer(SERVER_ADDRESS, SERVER_PORT);
         this.thread = new ConnectionThread(this);
         this.thread.start();
@@ -33,11 +36,14 @@ public class Client {
         }
     }
 
-    public boolean isConnected(){
-        return connected;
-    }
-
+    /**
+     * Method to establish a connection with the server
+     * @param SERVER_ADDRESS IP address of the server
+     * @param SERVER_PORT Port the server is listening on
+     * @return Socket that has just been established
+     */
     public Socket connectToServer(String SERVER_ADDRESS, int SERVER_PORT){
+        //Create the socket
         try {
             this.clientSocket = new Socket(SERVER_ADDRESS, SERVER_PORT);
         }catch(UnknownHostException e){
@@ -45,6 +51,8 @@ public class Client {
         } catch (IOException e) {
             System.err.println("IOException while connecting to server");
         }
+
+        //Begin the network Reader and Writer
         try{
             this.networkIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             this.networkOut = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -52,16 +60,25 @@ public class Client {
             System.err.println("IOException while opening network streams");
         }
 
+        //Send the user's name to the server
         this.networkOut.println("UID " + Player.getName());
 
         return clientSocket;
     }
 
+    //Communication
+
+    /**
+     * Method to send new messages from chat to the server
+     */
     public void sendMessageToServer() {
             this.networkOut.println(Player.getName());
             this.networkOut.flush();
     }
 
+    /**
+     * Deprecated? Have been using sendCoords for the same purpose
+     */
     public void sendCoordinateToServer() {
             this.networkOut.println(Player.getPlayerX());
             this.networkOut.println(Player.getPlayerY());
@@ -69,9 +86,16 @@ public class Client {
     }
 
     /**
-     * Sends coordinates of current stroke to server as CSV
+     * Sends coordinates of current stroke to server in the following format
+     * DRAW [WIDTH] [COLOR] [X],[Y]
+     *
+     *  [WIDTH] - Weight of the brush
+     *  [COLOR] - Color of the brush
+     *  [X]     - x-coordinate
+     *  [Y]     - y-coordinate
      */
     public void sendCoords() {
+        //ensure the brush color is defined
         if(this.brushColor == null){
             this.brushColor = "0x000000ff";
         }
@@ -83,41 +107,31 @@ public class Client {
                 Player.getPlayerY() + "\n");
     }
 
-    public void cleanup() {
-        try {
-            networkOut.close();
-            networkIn.close();
-            clientSocket.close();
-        }catch(IOException e){
-            System.err.println("Could not safely close socket");
-        }
+    /**
+     * Sends a clear signal to the server
+     */
+    public void sendClear() {
+        networkOut.println("CLEAR");
     }
 
-    public void setCanvas(Canvas c){
-        this.canvas = c;
+    //Getters
+
+    public boolean isConnected(){
+        return connected;
     }
 
     public Canvas getCanvas(){
         return this.canvas;
     }
 
-    public void sendDrawSettings(){
-        //send brush width
-        String msg = "BRUSH " + this.brushWidth;
-        networkOut.println(msg);
+    //Setters
 
-        //send brush color
-        msg = "COLOR " + this.brushColor;
-        networkOut.println(msg);
-    }
-
-    public void getDrawSettings(double width, String color){
+    public void setDrawSettings(double width, String color){
         this.brushWidth = width;
         this.brushColor = color;
     }
 
-    public void sendClear() {
-        networkOut.println("CLEAR");
-        System.out.println("Sending CLEAR");
+    public void setCanvas(Canvas c){
+        this.canvas = c;
     }
 }

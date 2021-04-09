@@ -43,9 +43,11 @@ public class Controller {
 
     @FXML private GraphicsContext gc;
 
+    //Current settings
     Client client = null;
     String background = "#f7f7f7";
 
+    //Insertion point
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
 
@@ -55,6 +57,7 @@ public class Controller {
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
         mainCanvas.setOnMousePressed((e) -> {
+            //Ensure the player is actually allowed to draw
             if(Player.isDrawer()) {
                 int brushWeight = BrushSize.getValue();
 //            String brush = brushSize.getText();
@@ -68,10 +71,10 @@ public class Controller {
 
 
                 if (eraser.isSelected()) {
-                    client.getDrawSettings(size, background);
+                    client.setDrawSettings(size, background);
                     gc.setFill(Color.valueOf(background));
                 } else {
-                    client.getDrawSettings(size, colorPicker.getValue().toString());
+                    client.setDrawSettings(size, colorPicker.getValue().toString());
                     gc.setFill(colorPicker.getValue());
                     //gc.fillRoundRect(x, y, size, size, 10, 10);
                 }
@@ -81,6 +84,7 @@ public class Controller {
         });
 
         mainCanvas.setOnMouseDragged((e) -> {
+            //Ensure the player is actually allowed to draw
             if(Player.isDrawer()) {
                 int brushWeight = BrushSize.getValue();
 //            String brush = brushSize.getText();
@@ -104,6 +108,7 @@ public class Controller {
         });
 
         mainCanvas.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+            //Ensure the player is actually allowed to draw
             if(Player.isDrawer()) {
                 int brushWeight = BrushSize.getValue();
 

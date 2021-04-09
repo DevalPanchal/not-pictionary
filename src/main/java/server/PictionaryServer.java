@@ -5,17 +5,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
+/**
+ * Main server class. Handles the flow of the program.
+ *
+ * Connects to MAX_PLAYERS before beginning a game
+ */
 public class PictionaryServer {
+    //Connection information
     private static final int SERVER_PORT = 9000;
     private static final int MAX_PLAYERS = 3;
-
     protected Socket clientSocket = null;
     protected ServerSocket serverSocket = null;
     protected Player[] players = null;
     protected int numPlayers = 0;
 
+    //Constructor (Also insertion point)
     public PictionaryServer(){
         try{
             //Start the server
@@ -55,12 +60,12 @@ public class PictionaryServer {
             Player drawer = null;
             boolean newRound = false;
 
+            //Main game loop
             while(true){
                 //pick the next player
                 drawer = game.chooseDrawer();
-                System.out.println(drawer.getUsername() + " is the drawer");
 
-                //tell the players which role they have, clear the canvas
+                //tell the players which role they have,
                 for(Player player : players){ player.sendRole(); }
 
                 //game loop for each round
@@ -77,38 +82,24 @@ public class PictionaryServer {
                         drawer.coordinates.drainTo(newCoords);
 
                         //Get the new messages sent by the players
+                        //TODO Update newRound somewhere in here with the game.isCorrectWord() function
                         for(Player player : players){
-
                             String newMsg;
                             while(!player.guesses.isEmpty()){
                                 newMsg = player.guesses.take();
                                 newMsgs.add(player.getUsername() + ": " + newMsg);
-                                newRound = game.isCorrectWord(newMsg);
                             }
-                        }
 
-
-
-                        //get the requests/data from each player, send them new drawing coordinates
-                        for (Player player : players) {
-                            //Send the new messages to all the players
-                            player.sendMsg(newMsgs);
-
-                            //don't check the player's guesses if they are drawing
+                            //Send all the guessers the drawing coordinates
                             if (!player.getDrawer()) {
-                                //check the guesses
-                                String guess;
-                                while (!player.guesses.isEmpty()) {
-                                    newRound = game.isCorrectWord(player.guesses.take());
-                                    if (newRound) {
-                                        break;
-                                    }
-                                }
-
                                 player.sendCoords(newCoords);
                             }
                         }
 
+                        //
+                        for (Player player : players) {
+                            player.sendMsg(newMsgs);
+                        }
 
                         //Clear the new messages for the next time around
                         newMsgs.clear();

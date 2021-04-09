@@ -9,26 +9,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 public class Lobby {
 
     @FXML private TextField playerName;
     @FXML private Button playButton;
 
     //Networking
-    Socket socket = null;
-
     String SERVER_ADDRESS = "localhost";
     int SERVER_PORT = 9000;
-
-    PrintWriter networkOut = null;
-    BufferedReader networkIn = null;
 
     public Lobby() {}
 
@@ -51,17 +39,17 @@ public class Lobby {
         Stage currentStage = Main.getPrimaryStage();
         currentStage.hide();
         try {
-            boolean connected;
-
-            if((connected = client.isConnected())) {
+            if(client.isConnected()) {
                 Stage mainGameStage = new Stage();
                 Main.setPrimaryStage(mainGameStage);
 
+                //Load the next scene
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
                 Parent root = loader.load();
                 Controller mainController = loader.getController();
-                mainController.setClient(client);
+                mainController.setClient(client);   //pass on the client object
 
+                //Show the new Scene
                 mainGameStage.setScene(new Scene(root, 1200, 800));
                 mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
                 mainGameStage.setTitle("Not Pictionary");
