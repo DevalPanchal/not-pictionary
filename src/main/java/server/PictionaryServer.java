@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class PictionaryServer {
     //Connection information
     private static final int SERVER_PORT = 9000;
-    private static final int MAX_PLAYERS = 3;
+    private static final int MAX_PLAYERS = 2;
     protected Socket clientSocket = null;
     protected ServerSocket serverSocket = null;
     protected Player[] players = null;
@@ -57,6 +57,9 @@ public class PictionaryServer {
             System.out.println("Enough players for a game");
             GameLogic game = new GameLogic(Arrays.asList(players));
             ArrayList<String> newMsgs = new ArrayList<>();
+
+            ArrayList<String> playerList = new ArrayList<>();
+
             Player drawer = null;
             boolean newRound = false;
 
@@ -65,8 +68,15 @@ public class PictionaryServer {
                 //pick the next player
                 drawer = game.chooseDrawer();
 
-                //tell the players which role they have,
-                for(Player player : players){ player.sendRole(); }
+                // go through each player
+                for(Player player : players){
+                    //tell the players which role they have,
+                    player.sendRole();
+                    // tell player name
+                    playerList.add(player.getUsername());
+                    player.sendPlayerName(playerList);
+                }
+                //System.out.println("players in the game: " + playerList);
 
                 //game loop for each round
                 while(!newRound) {
@@ -100,7 +110,6 @@ public class PictionaryServer {
                         for (Player player : players) {
                             player.sendMsg(newMsgs);
                         }
-
                         //Clear the new messages for the next time around
                         newMsgs.clear();
                     }

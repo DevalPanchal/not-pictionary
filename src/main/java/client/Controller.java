@@ -24,6 +24,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 
 public class Controller {
     @FXML private TextField chatInput;
@@ -47,12 +53,14 @@ public class Controller {
     Client client = null;
     String background = "#f7f7f7";
 
+    // Arraylist of players
+    ArrayList<String> players;
+
     //Insertion point
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
 
-        System.out.println(Player.getName());
-        addPlayer(Player.getName());
+        addPlayer();
 
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
@@ -125,11 +133,19 @@ public class Controller {
         clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
     }
 
+    /**
+     * resets the textfield to empty and refocuses on it in the chat menu
+     * @param textField
+     */
     public void resetTextField(TextField textField) {
         textField.setText("");
         textField.requestFocus();
     }
 
+    /**
+     * resets the canvas to a blank slate
+     * @param g
+     */
     public void resetCanvas(GraphicsContext g) {
         if(Player.isDrawer()) {
             g.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
@@ -137,6 +153,10 @@ public class Controller {
         }
     }
 
+    /**
+     * auto scroll chat to bottom when overflow occurs in chat container
+     * @param listView
+     */
     public void autoScrollChat(ListView<String> listView) {
         String message = chatInput.getText();
         if (!message.equals("")) {
@@ -147,11 +167,40 @@ public class Controller {
         }
     }
 
-    public void addPlayer(String name) {
-        Label label = new Label(name);
-        HBox PlayerNode = new HBox(label);
-        PlayerNode.getStyleClass().add("testCell");
-        playerView.getChildren().add(PlayerNode);
+    /**
+     * add player name to the room [top-right pane]
+     * @param
+     */
+    public void addPlayer() {
+        readPlayerNames();
+        for (String playerName: players) {
+            Label label = new Label(playerName);
+            HBox PlayerNode = new HBox(label);
+            PlayerNode.getStyleClass().add("testCell");
+            playerView.getChildren().add(PlayerNode);
+        }
+    }
+
+    /**
+     * 1. read names from the file
+     * 2. store them in an arraylist
+     * 3. loop through each player
+     * 4. print out to screen
+     */
+    public void readPlayerNames()  {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("players.txt"));
+            players = new ArrayList<>();
+            String line = reader.readLine();
+            while(line != null) {
+                players.add(line);
+                line = reader.readLine();
+            }
+            reader.close();
+            System.out.println(players);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void refresh() {

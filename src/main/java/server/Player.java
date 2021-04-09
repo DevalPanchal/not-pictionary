@@ -1,9 +1,6 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -98,6 +95,23 @@ public class Player {
         out.println(msg);
     }
 
+    /**
+     * Method to send player name
+     */
+    public void sendPlayerName(ArrayList<String> players) {
+        try {
+           FileWriter filewriter = new FileWriter("players.txt");
+           for (String str: players) {
+               filewriter.write(str + "\n");
+           }
+           filewriter.close();
+           System.out.println("Successfully wrote to file");
+        } catch (IOException e) {
+            System.err.println("An Error seems to have occured, call tech support and get scammed");
+            e.printStackTrace();
+        }
+    }
+
     //setters
 
     public void setUsername(String username){
@@ -140,5 +154,4 @@ public class Player {
     public PrintWriter getNetworkWriter(){
         return out;
     }
-
 }

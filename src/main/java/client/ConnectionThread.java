@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-public class ConnectionThread extends Thread{
+public class ConnectionThread extends Thread {
     private BufferedReader in = null;
     Client client = null;
 
@@ -76,7 +76,6 @@ public class ConnectionThread extends Thread{
             gc.fillOval(x,y,size,size);
            return false;
         }
-
 
         //Save the role assigned by the server
         else if(command.equalsIgnoreCase("ROLE")) {
