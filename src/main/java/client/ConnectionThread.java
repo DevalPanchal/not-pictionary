@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 
 public class ConnectionThread extends Thread {
     private BufferedReader in = null;
-    Client client = null;
+    private Client client = null;
 
     //Constructor
     ConnectionThread(Client client){
@@ -22,8 +22,17 @@ public class ConnectionThread extends Thread {
     @Override
     public void run(){
         boolean exit = false;
-        while(!exit){
+        while(!exit && !Thread.currentThread().isInterrupted()){
+            System.out.println(client.isConnected());
             exit = processCommand();
+        }
+
+        //disconnect the input and output streams
+        //
+        try {
+            client.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         System.out.println("terminated thread");
     }

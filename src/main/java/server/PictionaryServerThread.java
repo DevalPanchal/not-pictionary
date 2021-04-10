@@ -29,10 +29,10 @@ public class PictionaryServerThread extends Thread {
 
         //Process commands until the client terminates the connection
         boolean exit = false;
-        while(!exit){
+        while(!exit && player.getSocket().isConnected()){
             exit = processCommand();
         }
-        System.out.println("terminated thread");
+        System.out.println(player.getUsername() + " DISCONNECTED");
     }
 
     /**
@@ -111,6 +111,7 @@ public class PictionaryServerThread extends Thread {
         }
         // Get the command to terminate from the player
         else if(command.equalsIgnoreCase("EXIT")) {
+            out.println("EXIT");
             return true;
         }else{
             out.println("400 REQUEST NOT UNDERSTOOD");

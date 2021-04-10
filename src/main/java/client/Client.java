@@ -108,6 +108,17 @@ public class Client {
     }
 
     /**
+     * Cleanly disconnects from the server, closes all the streams and sockets
+     */
+    public void disconnect() throws IOException {
+        this.thread.interrupt();
+        this.networkOut.println("EXIT");
+        this.networkOut.close();
+        this.networkIn.close();
+        this.clientSocket.close();
+    }
+
+    /**
      * Sends a clear signal to the server
      */
     public void sendClear() {
@@ -116,7 +127,7 @@ public class Client {
 
     //Getters
 
-    public boolean isConnected(){
+    public synchronized boolean isConnected(){
         return connected;
     }
 
@@ -133,5 +144,9 @@ public class Client {
 
     public void setCanvas(Canvas c){
         this.canvas = c;
+    }
+
+    public synchronized void setConnected(boolean status){
+        this.connected = status;
     }
 }

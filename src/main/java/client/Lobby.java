@@ -1,5 +1,6 @@
 package client;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.io.IOException;
 
 public class Lobby {
 
@@ -54,6 +58,18 @@ public class Lobby {
                 mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
                 mainGameStage.setTitle("Not Pictionary");
                 mainGameStage.show();
+
+                mainGameStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent event) {
+                        System.out.println("Closing game");
+                        try {
+                            client.disconnect();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
