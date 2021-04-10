@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Main server class. Handles the flow of the program.
@@ -13,49 +14,29 @@ import java.util.Arrays;
  */
 public class PictionaryServer {
     //Connection information
-    private static final int SERVER_PORT = 9000;
-    private static final int MAX_PLAYERS = 2;
-    protected Socket clientSocket = null;
-    protected ServerSocket serverSocket = null;
-    protected Player[] players = null;
-    protected int numPlayers = 0;
+    private static final int MAX_PLAYERS = 4;
+    private static final int MIN_PLAYERS = 2;
+    protected final List<Player> players = new ArrayList<>();
 
     //Constructor (Also insertion point)
     public PictionaryServer(){
         try{
-            //Start the server
-            serverSocket = new ServerSocket(SERVER_PORT);
-            System.out.println("SERVER IS RUNNING...");
-            System.out.println("LISTENING ON PORT " + SERVER_PORT);
 
-            players = new Player[MAX_PLAYERS];
+            //Start connection thread
+            Runnable runnable = new ConnectClientThread(MAX_PLAYERS, players);
+            Thread connect = new Thread(runnable);
+            connect.start();
 
-            //Listen for incoming connections until the max number of players is reached
-            while(numPlayers != MAX_PLAYERS){
-                clientSocket = serverSocket.accept();
-
-                // Create a new Player object
-                players[numPlayers] = new Player(clientSocket);
-                players[numPlayers].pictionaryThread.start();
-                numPlayers++;
-
-                //Check for disconnected players and remove them from the list
-                for(int i=0; i<players.length; i++){
-                    if(players[i] != null && !players[i].pictionaryThread.isAlive()){
-                        players[i].pictionaryThread.join();
-                        for(int j=i; j<players.length-1; j++){
-                            players[j] = players[j+1];
-                        }
-                        i=0;
-                        numPlayers--;
-                    }
+            //Wait until there are enough players
+            synchronized (players){
+                while(players.size() < MIN_PLAYERS){
+                    players.wait();
                 }
-                System.out.println("CONNECTED PLAYERS " + numPlayers);
             }
 
             //Game time
             System.out.println("Enough players for a game");
-            GameLogic game = new GameLogic(Arrays.asList(players));
+            GameLogic game = new GameLogic(players);
             ArrayList<String> newMsgs = new ArrayList<>();
 
             ArrayList<String> playerList = new ArrayList<>();
@@ -115,7 +96,7 @@ public class PictionaryServer {
                     }
                 }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
