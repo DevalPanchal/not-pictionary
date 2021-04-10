@@ -27,6 +27,8 @@ public class Player {
     private BufferedReader in = null;
     private PrintWriter out = null;
 
+    private static PrintWriter output = null;
+
     //Communication queues
     BlockingQueue<String> guesses;      //holds a queue of guesses the player has made
     BlockingQueue<String> coordinates;  //holds a queue of coordinates to be sent to the client
@@ -39,6 +41,9 @@ public class Player {
         //setup the output streams
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        // Testing /////////////////////////////////////////////////////////////////
+        Player.output = new PrintWriter(socket.getOutputStream(), true);
 
         //start the listener thread
         this.pictionaryThread = new PictionaryServerThread(this);
@@ -60,6 +65,23 @@ public class Player {
             String msg = "COORD " + coord;
             out.println(msg);
         }
+    }
+
+    /**
+     * Method to send player name
+     */
+    public static void sendPlayerName(ArrayList<String> players) {
+//        String msg = "PLAYERNAMES " + players;
+//        output.println(msg);
+        for (String player: players) {
+            String msg = "PLAYERNAMES " + player;
+            output.println(msg);
+        }
+    }
+
+    public void sendPlayerNames(String name) {
+        String msg = "PLAYERNAMES " + name;
+        out.println(msg);
     }
 
     /**
@@ -95,22 +117,6 @@ public class Player {
         out.println(msg);
     }
 
-    /**
-     * Method to send player name
-     */
-    public void sendPlayerName(ArrayList<String> players) {
-        try {
-           FileWriter filewriter = new FileWriter("players.txt");
-           for (String str: players) {
-               filewriter.write(str + "\n");
-           }
-           filewriter.close();
-           System.out.println("Successfully wrote to file");
-        } catch (IOException e) {
-            System.err.println("An Error seems to have occured, call tech support and get scammed");
-            e.printStackTrace();
-        }
-    }
 
     //setters
 

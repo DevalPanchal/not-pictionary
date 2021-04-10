@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class ConnectionThread extends Thread {
@@ -83,6 +84,19 @@ public class ConnectionThread extends Thread {
                 Player.setDrawer(true);
             }else{
                 Player.setDrawer(false);
+            }
+            return false;
+        }
+
+        // Setting the player names
+        else if(command.equalsIgnoreCase("PLAYERNAMES")) {
+            // parse player names
+//            Player.setName(args);
+            String[] items = args.split(",");
+
+            System.out.println(Arrays.toString(items));
+            for (String item : items) {
+                Player.setName(item);
             }
             return false;
         }

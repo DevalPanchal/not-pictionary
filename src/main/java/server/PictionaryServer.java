@@ -1,6 +1,8 @@
 package server;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class PictionaryServer {
                         numPlayers--;
                     }
                 }
+
                 System.out.println("CONNECTED PLAYERS " + numPlayers);
             }
 
@@ -58,7 +61,9 @@ public class PictionaryServer {
             GameLogic game = new GameLogic(Arrays.asList(players));
             ArrayList<String> newMsgs = new ArrayList<>();
 
-            ArrayList<String> playerList = new ArrayList<>();
+
+            ArrayList<String> nameOfPlayer = new ArrayList<>();
+            String names;
 
             Player drawer = null;
             boolean newRound = false;
@@ -69,13 +74,19 @@ public class PictionaryServer {
                 drawer = game.chooseDrawer();
 
                 // go through each player
-                for(Player player : players){
+                for(Player player : players) {
                     //tell the players which role they have,
                     player.sendRole();
                     // tell player name
-                    playerList.add(player.getUsername());
-                    player.sendPlayerName(playerList);
+
+//                    names = player.getUsername();
+//                    player.sendPlayerNames(names);
+                    nameOfPlayer.add(player.getUsername());
+//                    player.sendPlayerName(playerList);
+                    Player.sendPlayerName(nameOfPlayer);
                 }
+
+//                Player.sendPlayerName(playerList);
                 //System.out.println("players in the game: " + playerList);
 
                 //game loop for each round

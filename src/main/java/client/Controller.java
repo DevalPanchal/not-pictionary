@@ -60,7 +60,7 @@ public class Controller {
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
 
-        addPlayer();
+        addPlayer(Player.getName());
 
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
@@ -171,21 +171,15 @@ public class Controller {
      * add player name to the room [top-right pane]
      * @param
      */
-    public void addPlayer() {
-        readPlayerNames();
-        for (String playerName: players) {
-            Label label = new Label(playerName);
-            HBox PlayerNode = new HBox(label);
-            PlayerNode.getStyleClass().add("testCell");
-            playerView.getChildren().add(PlayerNode);
-        }
+    public void addPlayer(String name) {
+        Label label = new Label(name);
+        HBox PlayerNode = new HBox(label);
+        PlayerNode.getStyleClass().add("testCell");
+        playerView.getChildren().add(PlayerNode);
     }
 
     /**
-     * 1. read names from the file
-     * 2. store them in an arraylist
-     * 3. loop through each player
-     * 4. print out to screen
+     * Reads player names from the players textfile
      */
     public void readPlayerNames()  {
         try {

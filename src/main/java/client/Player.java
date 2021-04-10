@@ -1,12 +1,14 @@
 package client;
 
+import java.util.ArrayList;
+
 public class Player {
     private static String name;
     private static boolean Drawer = false;
     private static double playerX;
     private static double playerY;
 
-    public Player() { }
+    public Player() { /**/ }
 
     public Player(String name, double playerX, double playerY) {
         Player.name = name;
