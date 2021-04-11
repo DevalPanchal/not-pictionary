@@ -1,6 +1,7 @@
 package client;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private static String name;
@@ -8,12 +9,15 @@ public class Player {
     private static double playerX;
     private static double playerY;
 
+    private static ArrayList<String> players;
+
     public Player() { /**/ }
 
     public Player(String name, double playerX, double playerY) {
         Player.name = name;
         Player.playerX = playerX;
         Player.playerY = playerY;
+        Player.players = new ArrayList<String>();
     }
 
     public static String getName() {
@@ -46,5 +50,13 @@ public class Player {
 
     public static void setDrawer(boolean drawer) {
         Player.Drawer = drawer;
+    }
+
+    public static void setPlayerList(String name) {
+        Player.players.add(name);
+    }
+
+    public static void printPlayerList() {
+        System.out.println(Player.players);
     }
 }

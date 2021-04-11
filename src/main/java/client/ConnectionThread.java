@@ -92,12 +92,21 @@ public class ConnectionThread extends Thread {
         else if(command.equalsIgnoreCase("PLAYERNAMES")) {
             // parse player names
 //            Player.setName(args);
-            String[] items = args.split(",");
+            System.out.println("TESTING: " + args);
 
-            System.out.println(Arrays.toString(items));
-            for (String item : items) {
-                Player.setName(item);
+            String[] players = args.split(",");
+            System.out.println(Arrays.toString(players));
+            for (String player: players) {
+                Player.setPlayerList(player);
+                Player.setName(player);
             }
+
+//            String[] items = args.split(",");
+//
+//            System.out.println(Arrays.toString(items));
+//            for (String item : items) {
+//                Player.setName(item);
+//            }
             return false;
         }
 

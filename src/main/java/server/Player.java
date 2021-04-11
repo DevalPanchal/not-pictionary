@@ -71,12 +71,14 @@ public class Player {
      * Method to send player name
      */
     public static void sendPlayerName(ArrayList<String> players) {
-//        String msg = "PLAYERNAMES " + players;
-//        output.println(msg);
-        for (String player: players) {
-            String msg = "PLAYERNAMES " + player;
-            output.println(msg);
-        }
+        String msg = "PLAYERNAMES " + players;
+        output.println(msg);
+
+//        for (String player: players) {
+//            String msg = "PLAYERNAMES " + player;
+//            output.println(msg);
+//        }
+        System.out.println("list of players: " + players);
     }
 
     public void sendPlayerNames(String name) {

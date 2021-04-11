@@ -1,8 +1,6 @@
 package server;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -21,6 +19,8 @@ public class PictionaryServer {
     protected ServerSocket serverSocket = null;
     protected Player[] players = null;
     protected int numPlayers = 0;
+
+    protected ArrayList<Player[]> playerList = new ArrayList<Player[]>();
 
     //Constructor (Also insertion point)
     public PictionaryServer(){
@@ -60,10 +60,10 @@ public class PictionaryServer {
             System.out.println("Enough players for a game");
             GameLogic game = new GameLogic(Arrays.asList(players));
             ArrayList<String> newMsgs = new ArrayList<>();
-
-
             ArrayList<String> nameOfPlayer = new ArrayList<>();
-            String names;
+
+
+//            playerList.forEach(player -> {});
 
             Player drawer = null;
             boolean newRound = false;
@@ -83,9 +83,9 @@ public class PictionaryServer {
 //                    player.sendPlayerNames(names);
                     nameOfPlayer.add(player.getUsername());
 //                    player.sendPlayerName(playerList);
-                    Player.sendPlayerName(nameOfPlayer);
-                }
 
+                }
+                Player.sendPlayerName(nameOfPlayer);
 //                Player.sendPlayerName(playerList);
                 //System.out.println("players in the game: " + playerList);
 
