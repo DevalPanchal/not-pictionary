@@ -156,6 +156,5 @@ public class Client {
 
     public void setWordLabel(Label label){
         this.wordLabel = label;
-        System.out.println(label.getText());
     }
 }
