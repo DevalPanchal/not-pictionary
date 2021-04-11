@@ -1,6 +1,8 @@
 package client;
 
+import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.util.StringTokenizer;
 public class ConnectionThread extends Thread {
     private BufferedReader in = null;
     private Client client = null;
+
 
     //Constructor
     ConnectionThread(Client client){
@@ -101,6 +104,15 @@ public class ConnectionThread extends Thread {
             GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
             gc.clearRect(0,0,client.getCanvas().getWidth(), client.getCanvas().getHeight());
             System.out.println("Clearing...");
+            return false;
+        }
+
+        // Receive the current word and send to client
+        else if(command.equalsIgnoreCase("WORD")){
+            Label newLabel = new Label();
+            newLabel.setText(args);
+            client.setWordLabel(newLabel);
+            System.out.println("client label has been updated");
             return false;
         }
 
