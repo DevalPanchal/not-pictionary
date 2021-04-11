@@ -121,6 +121,12 @@ public class Player {
         out.println(msg);
     }
 
+    public void sendCensoredWord(String Word){
+        String msg = "CENSORED ";
+        msg += Word.replaceAll("[A-Za-z]", "*");
+        out.println(msg);
+    }
+
     //setters
 
     public void setUsername(String username){
