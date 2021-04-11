@@ -74,7 +74,7 @@ public class GameLogic {
             Scanner scan = new Scanner(file);
             scan.useDelimiter(",");
             while(scan.hasNext()){
-                wordList.add(scan.next());
+                wordList.add(scan.next().replaceAll("\\s",""));
             }
             scan.close();
         } catch (Exception e) {
@@ -108,6 +108,11 @@ public class GameLogic {
     }
 
     public void setRandomWord(){
+        if (wordList.size() == 0){
+            File file = new File("./src/main/resources/word-lists/pokemon-word-list.csv");
+            parseFile(file);
+        }
+
         Random rand = new Random();
         int index = rand.nextInt(wordList.size());
         setCurrentWord(wordList.get(index));
@@ -165,9 +170,9 @@ public class GameLogic {
         return this.round;
     }
 
-    public static void main(String[] args){
-        File file = new File("./src/main/resources/word lists/pokemon-word-list.csv");
-        parseFile(file);
+//    public static void main(String[] args){
+//        File file = new File("./src/main/resources/word-lists/pokemon-word-list.csv");
+//        parseFile(file);
 //        setRandomWord();
 
 //        System.out.println(currentWord);
@@ -177,5 +182,5 @@ public class GameLogic {
         // for (String word : words){
         //     System.out.println(word);
         // }
-    }
+//    }
 }
