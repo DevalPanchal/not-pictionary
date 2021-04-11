@@ -44,7 +44,7 @@ public class Controller {
     @FXML private Button clearCanvas;
     @FXML private VBox playerView;
     @FXML private VBox chatView;
-    @FXML private Label wordLabel;
+    @FXML private static Label wordLabel;
 
     @FXML private Spinner<Integer> BrushSize;
 
@@ -205,6 +205,7 @@ public class Controller {
     }
 
     public void refresh() {
+        System.out.println("REFRESH");
         Stage currentStage = Main.getPrimaryStage();
         currentStage.hide();
         try {
@@ -225,6 +226,12 @@ public class Controller {
         this.client.setCanvas(mainCanvas);
         this.client.setWordLabel(wordLabel);
     }
+
+    public static void setWordLabel(Label label){
+        wordLabel = label;
+    }
+
+    public static Label getWordLabel(){ return wordLabel; }
 
 }
 
