@@ -107,13 +107,17 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        //TODO: fix label update issue
         // Receive the current word and update the client
         else if(command.equalsIgnoreCase("WORD")){
-            Label newLabel = new Label();
-            newLabel.setText(args);
-            client.setWordLabel(newLabel);
-            System.out.println("client label has been updated");
-            Controller.setWordLabel(newLabel);
+            System.out.println(args);
+            Player.setWord(args);
+
+//            Label newLabel = new Label();
+//            newLabel.setText(args);
+//            client.setWordLabel(newLabel);
+//            System.out.println("client label has been updated");
+//            Controller.setWordLabel(newLabel);
             return false;
         }
 

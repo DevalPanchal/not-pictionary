@@ -6,12 +6,15 @@ public class Player {
     private static double playerX;
     private static double playerY;
 
+    private static String word;
+
     public Player() { }
 
-    public Player(String name, double playerX, double playerY) {
+    public Player(String name, double playerX, double playerY, String word) {
         Player.name = name;
         Player.playerX = playerX;
         Player.playerY = playerY;
+        Player.word = word;
     }
 
     public static String getName() {
@@ -44,5 +47,13 @@ public class Player {
 
     public static void setDrawer(boolean drawer) {
         Player.Drawer = drawer;
+    }
+
+    public static void setWord(String word) {
+        Player.word = word;
+    }
+
+    public static String getWord() {
+        return Player.word;
     }
 }

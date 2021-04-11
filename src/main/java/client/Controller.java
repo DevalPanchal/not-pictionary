@@ -44,11 +44,12 @@ public class Controller {
     @FXML private Button clearCanvas;
     @FXML private VBox playerView;
     @FXML private VBox chatView;
-    @FXML private static Label wordLabel;
 
     @FXML private Spinner<Integer> BrushSize;
 
     @FXML private GraphicsContext gc;
+
+    @FXML private Label wordLabel;
 
     //Current settings
     Client client = null;
@@ -62,6 +63,8 @@ public class Controller {
         gc = mainCanvas.getGraphicsContext2D();
 
         addPlayer();
+
+        wordLabel.setText(Player.getWord());
 
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
 
@@ -154,6 +157,11 @@ public class Controller {
         }
     }
 
+    public void setWordLabel(Label label) {
+        System.out.println("word is : " + Player.getWord());
+        label.setText(Player.getWord());
+    }
+
     /**
      * auto scroll chat to bottom when overflow occurs in chat container
      * @param listView
@@ -224,14 +232,7 @@ public class Controller {
     public void setClient(Client client){
         this.client = client;
         this.client.setCanvas(mainCanvas);
-        this.client.setWordLabel(wordLabel);
     }
-
-    public static void setWordLabel(Label label){
-        wordLabel = label;
-    }
-
-    public static Label getWordLabel(){ return wordLabel; }
 
 }
 
