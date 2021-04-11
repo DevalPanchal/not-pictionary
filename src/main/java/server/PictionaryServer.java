@@ -61,8 +61,6 @@ public class PictionaryServer {
             GameLogic game = new GameLogic(Arrays.asList(players));
             ArrayList<String> newMsgs = new ArrayList<>();
             ArrayList<String> nameOfPlayer = new ArrayList<>();
-
-
 //            playerList.forEach(player -> {});
 
             Player drawer = null;
@@ -83,9 +81,8 @@ public class PictionaryServer {
 //                    player.sendPlayerNames(names);
                     nameOfPlayer.add(player.getUsername());
 //                    player.sendPlayerName(playerList);
-
                 }
-                Player.sendPlayerName(nameOfPlayer);
+
 //                Player.sendPlayerName(playerList);
                 //System.out.println("players in the game: " + playerList);
 
@@ -110,7 +107,7 @@ public class PictionaryServer {
                                 newMsg = player.guesses.take();
                                 newMsgs.add(player.getUsername() + ": " + newMsg);
                             }
-
+                            player.sendPlayerName(nameOfPlayer);
                             //Send all the guessers the drawing coordinates
                             if (!player.getDrawer()) {
                                 player.sendCoords(newCoords);

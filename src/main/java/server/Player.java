@@ -70,15 +70,14 @@ public class Player {
     /**
      * Method to send player name
      */
-    public static void sendPlayerName(ArrayList<String> players) {
+    public void sendPlayerName(ArrayList<String> players) {
         String msg = "PLAYERNAMES " + players;
-        output.println(msg);
-
+        out.println(msg);
+        System.out.println("list of players: " + players);
 //        for (String player: players) {
 //            String msg = "PLAYERNAMES " + player;
 //            output.println(msg);
 //        }
-        System.out.println("list of players: " + players);
     }
 
     public void sendPlayerNames(String name) {
@@ -103,7 +102,6 @@ public class Player {
         String msg = "CLEAR";
         out.println(msg);
     }
-
 
     /**
      * Method to notify the client which role they are to play

@@ -96,6 +96,7 @@ public class ConnectionThread extends Thread {
 
             String[] players = args.split(",");
             System.out.println(Arrays.toString(players));
+
             for (String player: players) {
                 Player.setPlayerList(player);
                 Player.setName(player);
