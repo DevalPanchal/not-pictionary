@@ -19,6 +19,7 @@ public class Player {
     //Player properties
     private String username;
     private boolean drawer = false;
+    private String word;
 
     // Connection information
     public PictionaryServerThread pictionaryThread = null;
@@ -129,6 +130,9 @@ public class Player {
     public void setNetworkReader(BufferedReader in) {
         this.in = in;
     }
+
+    public void setWord(String word){ this.word = word; }
+
     //getters
 
     public String getUsername(){
@@ -154,4 +158,6 @@ public class Player {
     public PrintWriter getNetworkWriter(){
         return out;
     }
+
+    public String getWord(){ return word; }
 }
