@@ -21,8 +21,9 @@ public class Client {
     private Canvas canvas = null;
     private String brushColor;
     private double brushWidth;
-    private Label wordLabel;
 
+    private Label wordLabel;
+    private static String word;
     //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
         //Set the server port and address
@@ -67,6 +68,7 @@ public class Client {
 
         return clientSocket;
     }
+
 
     //Communication
 
@@ -139,6 +141,17 @@ public class Client {
 
     public Label getWordLabel(){ return this.wordLabel; }
 
+    public void setWordLabel(Label label) {
+        this.wordLabel = label;
+    }
+
+    public static void setWord(String word) {
+        Client.word = word;
+    }
+    public static String getWord() {
+        return word;
+    }
+
     //Setters
 
     public void setDrawSettings(double width, String color){
@@ -154,7 +167,7 @@ public class Client {
         this.connected = status;
     }
 
-    public void setWordLabel(Label label){
-        this.wordLabel = label;
-    }
+//    public void setWordLabel(Label label){
+//        this.wordLabel = label;
+//    }
 }

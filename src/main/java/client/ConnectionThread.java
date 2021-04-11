@@ -1,5 +1,6 @@
 package client;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -109,20 +110,15 @@ public class ConnectionThread extends Thread {
 
         //TODO: fix label update issue
         // Receive the current word and update the client
-        else if(command.equalsIgnoreCase("WORD")){
-            System.out.println(args);
-            Player.setWord(args);
-
-//            Label newLabel = new Label();
-//            newLabel.setText(args);
-//            client.setWordLabel(newLabel);
-//            System.out.println("client label has been updated");
-//            Controller.setWordLabel(newLabel);
+        else if(command.equalsIgnoreCase("WORD")) {
+            Platform.runLater(() -> {
+                client.getWordLabel().setText(args);
+            });
             return false;
         }
 
         //Exit the game
-        else if(command.equalsIgnoreCase("EXIT")){
+        else if(command.equalsIgnoreCase("EXIT")) {
             return true;
         }
 

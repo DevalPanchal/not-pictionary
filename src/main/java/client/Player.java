@@ -54,6 +54,6 @@ public class Player {
     }
 
     public static String getWord() {
-        return Player.word;
+        return word;
     }
 }
