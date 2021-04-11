@@ -48,7 +48,8 @@ public class PictionaryServer {
             while(true){
                 //pick the next player
                 drawer = game.chooseDrawer();
-
+                drawer.setWord(game.getCurrentWord());
+                System.out.println("THE CURRENT WORD = " + game.getCurrentWord());
                 // go through each player
                 for(Player player : players){
                     //tell the players which role they have,
