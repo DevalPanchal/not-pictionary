@@ -117,6 +117,13 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        else if (command.equalsIgnoreCase("CENSORED")){
+            Platform.runLater(() -> {
+                client.getWordLabel().setText(args);
+            });
+            return false;
+        }
+
         //Exit the game
         else if(command.equalsIgnoreCase("EXIT")) {
             return true;
