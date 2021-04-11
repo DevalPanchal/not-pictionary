@@ -1,6 +1,7 @@
 package client;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 
 import java.io.*;
 import java.net.Socket;
@@ -20,6 +21,7 @@ public class Client {
     private Canvas canvas = null;
     private String brushColor;
     private double brushWidth;
+    private Label wordLabel;
 
     //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
@@ -135,6 +137,8 @@ public class Client {
         return this.canvas;
     }
 
+    public Label getWordLabel(){ return this.wordLabel; }
+
     //Setters
 
     public void setDrawSettings(double width, String color){
@@ -148,5 +152,10 @@ public class Client {
 
     public synchronized void setConnected(boolean status){
         this.connected = status;
+    }
+
+    public void setWordLabel(Label label){
+        this.wordLabel = label;
+        System.out.println(label.getText());
     }
 }
