@@ -113,6 +113,14 @@ public class Player {
         }
     }
 
+    public void sendCurrentWord(){
+        String msg = "WORD ";
+        if(this.getDrawer()){
+            msg += word;
+        }
+        out.println(msg);
+    }
+
     //setters
 
     public void setUsername(String username){
