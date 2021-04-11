@@ -100,6 +100,11 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        else if (command.equalsIgnoreCase("PLAYERNAMES")) {
+            System.out.println("TESTING: " + args);
+            return false;
+        }
+
         //Clear the current canvas
         else if(command.equalsIgnoreCase("CLEAR")){
             GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
@@ -111,9 +116,7 @@ public class ConnectionThread extends Thread {
         //TODO: fix label update issue
         // Receive the current word and update the client
         else if(command.equalsIgnoreCase("WORD")) {
-            Platform.runLater(() -> {
-                client.getWordLabel().setText(args);
-            });
+            Platform.runLater(() -> client.getWordLabel().setText(args));
             return false;
         }
 

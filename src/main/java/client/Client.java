@@ -2,6 +2,7 @@ package client;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.io.*;
 import java.net.Socket;
@@ -21,6 +22,7 @@ public class Client {
     private Canvas canvas = null;
     private String brushColor;
     private double brushWidth;
+
 
     private Label wordLabel;
     private static String word;

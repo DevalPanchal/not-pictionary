@@ -3,6 +3,7 @@ package server;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -57,10 +58,18 @@ public class Player {
      * @param newCoords new coordinates to be drawn.
      */
     public synchronized void sendCoords(ArrayList<String> newCoords) {
-        for(String coord : newCoords){
+        for(String coord : newCoords) {
             String msg = "COORD " + coord;
             out.println(msg);
         }
+    }
+
+    public synchronized void sendPlayerNames(List<Player> newPlayers) {
+        String msg = "PLAYERNAMES ";
+        for (Player player: newPlayers) {
+            msg += player.getUsername() + " ";
+        }
+        out.println(msg);
     }
 
     /**
@@ -94,23 +103,6 @@ public class Player {
         }
         System.out.println(this.getUsername() + ": " + msg);
         out.println(msg);
-    }
-
-    /**
-     * Method to send player name
-     */
-    public void sendPlayerName(ArrayList<String> players) {
-        try {
-           FileWriter filewriter = new FileWriter("players.txt");
-           for (String str: players) {
-               filewriter.write(str + "\n");
-           }
-           filewriter.close();
-           System.out.println("Successfully wrote to file");
-        } catch (IOException e) {
-            System.err.println("An Error seems to have occured, call tech support and get scammed");
-            e.printStackTrace();
-        }
     }
 
     public void sendCurrentWord(){

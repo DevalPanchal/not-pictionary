@@ -61,7 +61,7 @@ public class Controller {
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
 
-        addPlayer();
+        //addPlayer();
 //        wordLabel.setText(Client.getWord());
 
         addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
@@ -174,7 +174,6 @@ public class Controller {
      * @param
      */
     public void addPlayer() {
-        readPlayerNames();
         for (String playerName: players) {
             Label label = new Label(playerName);
             HBox PlayerNode = new HBox(label);
@@ -183,27 +182,6 @@ public class Controller {
         }
     }
 
-    /**
-     * 1. read names from the file
-     * 2. store them in an arraylist
-     * 3. loop through each player
-     * 4. print out to screen
-     */
-    public void readPlayerNames()  {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("players.txt"));
-            players = new ArrayList<>();
-            String line = reader.readLine();
-            while(line != null) {
-                players.add(line);
-                line = reader.readLine();
-            }
-            reader.close();
-            System.out.println(players);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void refresh() {
         System.out.println("REFRESH");
