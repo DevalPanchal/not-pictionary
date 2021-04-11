@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class GameLogic {
     
     private static List<String> wordList = new ArrayList<>();
-    private String currentWord = "";
+    private static String currentWord = "";
     private List<Player> playerList = new ArrayList<>();
     private static Timer timer;
     private int round = 1;
@@ -107,6 +107,12 @@ public class GameLogic {
         return result;
     }
 
+    public void setRandomWord(){
+        Random rand = new Random();
+        int index = rand.nextInt(wordList.size());
+        setCurrentWord(wordList.get(index));
+    }
+
     // Guessing Words
     public boolean isCorrectWord(String word){
         // Remove need to check upper or lower case by casting to uppercase
@@ -139,12 +145,10 @@ public class GameLogic {
 
     // Getters and Setters
     public void setCurrentWord(String word){
-        this.currentWord = word;
+        currentWord = word;
     }
 
-    public String getCurrentWord(){
-        return this.currentWord;
-    }
+    public String getCurrentWord(){ return currentWord; }
 
     /**
      * Increment the round number by 1
@@ -164,7 +168,11 @@ public class GameLogic {
     public static void main(String[] args){
         File file = new File("./src/main/resources/word lists/pokemon-word-list.csv");
         parseFile(file);
-        List<String> words = setWordChoices();
+//        setRandomWord();
+
+//        System.out.println(currentWord);
+//        List<String> words = setWordChoices();
+
         // countDownTimer();
         // for (String word : words){
         //     System.out.println(word);
