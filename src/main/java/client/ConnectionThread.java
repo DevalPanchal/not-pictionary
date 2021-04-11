@@ -107,12 +107,13 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
-        // Receive the current word and send to client
+        // Receive the current word and update the client
         else if(command.equalsIgnoreCase("WORD")){
             Label newLabel = new Label();
             newLabel.setText(args);
             client.setWordLabel(newLabel);
             System.out.println("client label has been updated");
+            Controller.setWordLabel(newLabel);
             return false;
         }
 
