@@ -44,6 +44,7 @@ public class Controller {
     @FXML private Button clearCanvas;
     @FXML private VBox playerView;
     @FXML private VBox chatView;
+    @FXML private Label wordLabel;
 
     @FXML private Spinner<Integer> BrushSize;
 
@@ -222,6 +223,7 @@ public class Controller {
     public void setClient(Client client){
         this.client = client;
         this.client.setCanvas(mainCanvas);
+        this.client.setWordLabel(wordLabel);
     }
 
 }
