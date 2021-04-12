@@ -1,6 +1,9 @@
 package client;
 
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
@@ -10,6 +13,7 @@ import java.util.StringTokenizer;
 public class ConnectionThread extends Thread {
     private BufferedReader in = null;
     private Client client = null;
+
 
     //Constructor
     ConnectionThread(Client client){
@@ -113,8 +117,24 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        //TODO: fix label update issue
+        // Receive the current word and update the client
+        else if(command.equalsIgnoreCase("WORD")) {
+            Platform.runLater(() -> {
+                client.getWordLabel().setText(args);
+            });
+            return false;
+        }
+
+        else if (command.equalsIgnoreCase("CENSORED")){
+            Platform.runLater(() -> {
+                client.getWordLabel().setText(args);
+            });
+            return false;
+        }
+
         //Exit the game
-        else if(command.equalsIgnoreCase("EXIT")){
+        else if(command.equalsIgnoreCase("EXIT")) {
             return true;
         }
 

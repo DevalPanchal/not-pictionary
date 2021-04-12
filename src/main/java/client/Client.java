@@ -2,6 +2,7 @@ package client;
 
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,6 +24,8 @@ public class Client {
     private double brushWidth;
     ObservableList<String> clientItems;
 
+    private Label wordLabel;
+    private static String word;
     //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
         //Set the server port and address
@@ -67,6 +70,7 @@ public class Client {
 
         return clientSocket;
     }
+
 
     //Communication
 
@@ -149,6 +153,19 @@ public class Client {
         return this.canvas;
     }
 
+    public Label getWordLabel(){ return this.wordLabel; }
+
+    public void setWordLabel(Label label) {
+        this.wordLabel = label;
+    }
+
+    public static void setWord(String word) {
+        Client.word = word;
+    }
+    public static String getWord() {
+        return word;
+    }
+
     //Setters
 
     public void setDrawSettings(double width, String color){
@@ -163,4 +180,8 @@ public class Client {
     public synchronized void setConnected(boolean status){
         this.connected = status;
     }
+
+//    public void setWordLabel(Label label){
+//        this.wordLabel = label;
+//    }
 }

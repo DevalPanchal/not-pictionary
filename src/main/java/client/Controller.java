@@ -48,6 +48,7 @@ public class Controller {
     @FXML private Spinner<Integer> BrushSize;
 
     @FXML private GraphicsContext gc;
+    @FXML private Label wordLabel;
 
     //Current settings
     Client client = null;
@@ -61,6 +62,7 @@ public class Controller {
         gc = mainCanvas.getGraphicsContext2D();
 
         addPlayer();
+//        wordLabel.setText(Client.getWord());
 
         addBtn.setOnAction(actionEvent2 -> autoScrollChat(chatMenu));
 
@@ -76,7 +78,6 @@ public class Controller {
 //            System.out.println(x + ", " + y);
                 Player.setPlayerX(x);
                 Player.setPlayerY(y);
-
 
                 if (eraser.isSelected()) {
                     client.setDrawSettings(size, background);
@@ -131,6 +132,7 @@ public class Controller {
         });
 
         clearCanvas.setOnAction(actionEvent -> resetCanvas(gc));
+        wordLabel.setText(Player.getWord());
     }
 
     /**
@@ -214,6 +216,7 @@ public class Controller {
     }
 
     public void refresh() {
+        System.out.println("REFRESH");
         Stage currentStage = Main.getPrimaryStage();
         currentStage.hide();
         try {
@@ -232,6 +235,7 @@ public class Controller {
     public void setClient(Client client){
         this.client = client;
         this.client.setCanvas(mainCanvas);
+        this.client.setWordLabel(wordLabel);
         client.setItems(chatMenu.getItems());
     }
 

@@ -50,6 +50,13 @@ public class PictionaryServer {
                 //pick the next player
                 drawer = game.chooseDrawer();
 
+                // Set random word
+                game.setRandomWord();
+                System.out.println("THE CURRENT WORD = " + game.getCurrentWord());
+                String word = game.getCurrentWord();
+                drawer.setWord(word);
+                drawer.sendCurrentWord();
+
                 // go through each player
                 for(Player player : players){
                     //tell the players which role they have,
@@ -57,6 +64,11 @@ public class PictionaryServer {
                     // tell player name
                     playerList.add(player.getUsername());
                     player.sendPlayerName(playerList);
+
+                    // show the censored version of the word
+                    if (!player.getDrawer()){
+                        player.sendCensoredWord(word);
+                    }
                 }
                 //System.out.println("players in the game: " + playerList);
 
