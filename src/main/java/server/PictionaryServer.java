@@ -1,19 +1,14 @@
 package server;
 
-import client.Client;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.*;
 
 /**
  * Main server class. Handles the flow of the program.
  *
- * Connects to MAX_PLAYERS before beginning a game
+ * Connects to MIN_PLAYERS before beginning a game
  */
 public class PictionaryServer {
-    //Connection information
+    //Game information
     private static final int MAX_PLAYERS = 4;
     private static final int MIN_PLAYERS = 2;
     protected final List<Player> players = new ArrayList<>();
@@ -21,7 +16,6 @@ public class PictionaryServer {
     //Constructor (Also insertion point)
     public PictionaryServer(){
         try{
-
             //Start connection thread
             Runnable runnable = new ConnectClientThread(MAX_PLAYERS, players);
             Thread connect = new Thread(runnable);
@@ -39,7 +33,7 @@ public class PictionaryServer {
             GameLogic game = new GameLogic(players);
             ArrayList<String> newMsgs = new ArrayList<>();
 
-            Player drawer = null;
+            Player drawer;
             boolean newRound;
 
             //Main game loop
@@ -49,21 +43,21 @@ public class PictionaryServer {
                 //pick the next player
                 drawer = game.chooseDrawer();
 
-                // Set random word
+                // Set random word and send it to the drawer
                 game.setRandomWord();
                 System.out.println("THE CURRENT WORD = " + game.getCurrentWord());
                 String word = game.getCurrentWord();
                 drawer.setWord(word);
                 drawer.sendCurrentWord();
 
-                // go through each player
+                //inform each player of their role and the length of the word
                 for(Player player : players){
                     //tell the players which role they have,
                     player.sendRole();
 
                     // show the censored version of the word
                     if (!player.getDrawer()){
-                        player.sendCensoredWord(word);
+                        player.sendCensoredWord();
                     }
                 }
 
@@ -87,9 +81,11 @@ public class PictionaryServer {
                                 newMsg = player.guesses.take();
                                 newMsgs.add(player.getUsername() + ": " + newMsg);
 
-                                //check if the word was guessed
                                 if(!player.getDrawer()) {
+                                    //check if the word was guessed
                                     newRound = game.isCorrectWord(newMsg);
+
+                                    //Move onto the next round
                                     if (newRound) {
                                         newMsgs.add(player.getUsername() + " guessed the correct word!");
                                         newMsgs.add("Time for a new round");
@@ -103,10 +99,17 @@ public class PictionaryServer {
                                 player.sendCoords(newCoords);
                             }
                         }
-                        //
+
+                        //send all the new messages to the players
                         for (Player player : players) {
                             player.sendMsg(newMsgs);
+
+                            //clear the screen if there is a new round
+                            if(newRound){
+                                player.sendClear();
+                            }
                         }
+
                         //Clear the new messages for the next time around
                         newMsgs.clear();
                     }
@@ -118,6 +121,6 @@ public class PictionaryServer {
     }
 
     public static void main(String[] args){
-        PictionaryServer server = new PictionaryServer();
+        new PictionaryServer();
     }
 }

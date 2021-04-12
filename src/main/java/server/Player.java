@@ -4,17 +4,15 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class to hold the relevant information for a player
  *
- * Keeps track of the Player's username, gamestatus (ie. if the player is drawing or not),
+ * Keeps track of the Player's username, role (ie. if the player is drawing or not),
  * and connections for the drawing and chat
  *
- *   Should eventually include wrappers for the threads to allow the main class to easier control what's going on
  */
 public class Player {
     //Player properties
@@ -23,11 +21,10 @@ public class Player {
     private String word;
 
     // Connection information
-    public PictionaryServerThread pictionaryThread = null;
-    private Socket socket = null;
-
-    private BufferedReader in = null;
-    private PrintWriter out = null;
+    public PictionaryServerThread pictionaryThread;
+    private final Socket socket;
+    private final BufferedReader in;
+    private final PrintWriter out;
 
     //Communication queues
     BlockingQueue<String> guesses;      //holds a queue of guesses the player has made
@@ -65,10 +62,14 @@ public class Player {
 
     }
 
+    /**
+     * Sends the names of all the players contained in newPlayers to the client
+     * @param newPlayers list of the usernames of all currently connected players
+     */
     public synchronized void sendPlayerNames(List<Player> newPlayers) {
-        String msg = "PLAYERNAMES ";
+        StringBuilder msg = new StringBuilder("PLAYERNAMES ");
         for (Player player: newPlayers) {
-            msg += player.getUsername() + " ";
+            msg.append(player.getUsername()).append(" ");
         }
         out.println(msg);
     }
@@ -94,6 +95,10 @@ public class Player {
 
     /**
      * Method to notify the client which role they are to play
+     *
+     * Roles are as follows:
+     *  DRAWER: responsible for drawing
+     *  GUESSER: responsible for guessing the word being drawn
      */
     public void sendRole() {
         String msg = "ROLE ";
@@ -106,6 +111,9 @@ public class Player {
         out.println(msg);
     }
 
+    /**
+     * Send the word to draw to the player
+     */
     public void sendCurrentWord(){
         String msg = "WORD ";
         if(this.getDrawer()){
@@ -114,9 +122,12 @@ public class Player {
         out.println(msg);
     }
 
-    public void sendCensoredWord(String Word){
+    /**
+     * Sends censored word to the player
+     */
+    public void sendCensoredWord(){
         String msg = "CENSORED ";
-        msg += Word.replaceAll("[A-Za-z]", "*");
+        msg += word.replaceAll("[A-Za-z]", "_ ");
         out.println(msg);
     }
 
@@ -132,10 +143,6 @@ public class Player {
 
     public synchronized void setClear(boolean clear) {
         this.clear = clear;
-    }
-
-    public void setNetworkReader(BufferedReader in) {
-        this.in = in;
     }
 
     public void setWord(String word){ this.word = word; }
@@ -165,6 +172,4 @@ public class Player {
     public PrintWriter getNetworkWriter(){
         return out;
     }
-
-    public String getWord(){ return word; }
 }

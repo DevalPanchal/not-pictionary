@@ -5,13 +5,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
+/**
+ * Thread meant to receive messages from the client over the network.
+ * Is constantly listening for new commands.
+ * Takes action when a valid command is sent
+ */
 public class PictionaryServerThread extends Thread {
     //Networking
-    protected PrintWriter out = null;
-    protected BufferedReader in = null;
+    protected PrintWriter out;
+    protected BufferedReader in;
 
     //Function
-    Player player = null;
+    final Player player;
 
     //Constructor
     public PictionaryServerThread(Player player){
@@ -24,10 +29,7 @@ public class PictionaryServerThread extends Thread {
     //insertion point
     @Override
     public void run(){
-        //send confirmation of connection
-        //out.println("CONNECTED 200 OK");
-
-        //Process commands until the client terminates the connection
+        //Process commands until connection is terminated
         boolean exit = false;
         while(!exit && player.getSocket().isConnected()){
             exit = processCommand();
@@ -40,8 +42,9 @@ public class PictionaryServerThread extends Thread {
      * @return status of thread - true for exit, false for keep alive
      */
     private boolean processCommand() {
-        String message = null;
+        String message;
         try{
+            //hangs here until new message is received
             message = in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,7 +56,7 @@ public class PictionaryServerThread extends Thread {
         String command = st.nextToken();
         String args = null;
         if(st.hasMoreTokens()){
-            args = message.substring(command.length()+1, message.length());
+            args = message.substring(command.length()+1);
         }
         return processCommand(command, args);
     }
@@ -68,7 +71,7 @@ public class PictionaryServerThread extends Thread {
      * @return Thread status - true for exit, false for keep alive
      */
     private boolean processCommand(String command, String args) {
-        // Get the username from the player
+        // Get the username from the player. Sets the username in the associated player object
         if(command.equalsIgnoreCase(("UID"))){
             player.setUsername(args);
             synchronized (player) {
@@ -85,14 +88,12 @@ public class PictionaryServerThread extends Thread {
         // Receive drawing points from the user, add them to the player's drawing queue
         else if(command.equalsIgnoreCase("DRAW")){
             //add the new coordinate to the coordinate queue
-            //TODO: Add some verification that the coordinate is valid
             try {
                 player.coordinates.put(args);
             }catch(InterruptedException e) {
                 System.err.println("Could not add coordinate to player's coordinate queue");
             }
             return false;
-
         }
         //Receive guesses and add them to the player's guess queue (Justin)
         else if (command.equalsIgnoreCase("MSG")){
@@ -108,14 +109,15 @@ public class PictionaryServerThread extends Thread {
             synchronized (player) {
                 player.setClear(true);
             }
-
             return false;
         }
-        // Get the command to terminate from the player
+        // Terminate the connection with the user
         else if(command.equalsIgnoreCase("EXIT")) {
             out.println("EXIT");
             return true;
-        }else{
+        }
+        // Request does not contain any of the previous commands. Have no idea what to do with it.
+        else{
             out.println("400 REQUEST NOT UNDERSTOOD");
             return false;
         }

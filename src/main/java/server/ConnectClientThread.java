@@ -5,6 +5,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
+/**
+ * Thread to asynchronously connect with clients.
+ * Creates a new player object and adds it into a player list
+ */
 public class ConnectClientThread implements Runnable{
     private static final int SERVER_PORT = 9000;
     protected Socket clientSocket = null;
@@ -18,6 +22,7 @@ public class ConnectClientThread implements Runnable{
         this.players = players;
     }
 
+    //insertion point
     @Override
     public void run() {
         try {
@@ -43,9 +48,12 @@ public class ConnectClientThread implements Runnable{
                             i = 0;
                         }
                     }
+                    //wait until the server receives and sets the player's name
                     synchronized (players.get(players.size() - 1)) {
                         players.get(players.size() - 1).wait();
                     }
+
+                    //send a list of the player names to each of the connected clients
                     for (Player player: players) {
                         player.sendPlayerNames(players);
                     }
