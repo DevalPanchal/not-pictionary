@@ -81,7 +81,6 @@ public class PictionaryServer {
                         drawer.coordinates.drainTo(newCoords);
 
                         //Get the new messages sent by the players
-                        //TODO Update newRound somewhere in here with the game.isCorrectWord() function
                         for(Player player : players){
                             String newMsg;
                             while(!player.guesses.isEmpty()){
@@ -89,11 +88,13 @@ public class PictionaryServer {
                                 newMsgs.add(player.getUsername() + ": " + newMsg);
 
                                 //check if the word was guessed
-                                newRound = game.isCorrectWord(newMsg);
-                                if(newRound){
-                                    newMsgs.add(player.getUsername() + " guessed the correct word!");
-                                    newMsgs.add("Time for a new round");
-                                    game.incRound();
+                                if(!player.getDrawer()) {
+                                    newRound = game.isCorrectWord(newMsg);
+                                    if (newRound) {
+                                        newMsgs.add(player.getUsername() + " guessed the correct word!");
+                                        newMsgs.add("Time for a new round");
+                                        game.incRound();
+                                    }
                                 }
                             }
 
