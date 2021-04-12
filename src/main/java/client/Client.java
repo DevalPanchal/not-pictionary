@@ -1,5 +1,6 @@
 package client;
 
+import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 
 import java.io.*;
@@ -20,6 +21,7 @@ public class Client {
     private Canvas canvas = null;
     private String brushColor;
     private double brushWidth;
+    ObservableList<String> clientItems;
 
     //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
@@ -71,9 +73,21 @@ public class Client {
     /**
      * Method to send new messages from chat to the server
      */
-    public void sendMessageToServer() {
-            this.networkOut.println(Player.getName());
+    public void sendMessageToServer(String msg) {
+            System.out.println("Player '" + Player.getName() + "' guessed: " + msg);
+            this.networkOut.println("MSG " + msg);
             this.networkOut.flush();
+    }
+
+    /**
+     * Observablelist setter/getter
+     */
+    public void setItems(ObservableList<String> list){
+        this.clientItems = list;
+    }
+
+    public ObservableList<String> getItems(){
+        return this.clientItems;
     }
 
     /**

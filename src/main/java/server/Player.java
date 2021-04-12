@@ -60,6 +60,7 @@ public class Player {
             String msg = "COORD " + coord;
             out.println(msg);
         }
+
     }
 
     /**
@@ -105,9 +106,9 @@ public class Player {
                filewriter.write(str + "\n");
            }
            filewriter.close();
-           System.out.println("Successfully wrote to file");
+           System.out.println("Successfully wrote to file.");
         } catch (IOException e) {
-            System.err.println("An Error seems to have occured, call tech support and get scammed");
+            System.err.println("An Error seems to have occurred, call tech support and get scammed.");
             e.printStackTrace();
         }
     }

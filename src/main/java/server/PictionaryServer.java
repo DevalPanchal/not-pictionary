@@ -1,11 +1,11 @@
 package server;
 
+import client.Client;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Main server class. Handles the flow of the program.
@@ -46,6 +46,7 @@ public class PictionaryServer {
 
             //Main game loop
             while(true){
+
                 //pick the next player
                 drawer = game.chooseDrawer();
 
