@@ -94,22 +94,21 @@ public class PictionaryServerThread extends Thread {
             return false;
 
         }
+        //Receive guesses and add them to the player's guess queue (Justin)
+        else if (command.equalsIgnoreCase("MSG")){
+            try{
+                player.guesses.put(args);
+            }catch(InterruptedException e){
+                System.err.println("Could not add message to player's guess queue");
+            }
+            return false;
+        }
         // Set the clear flag of the player to true.
         else if(command.equalsIgnoreCase("CLEAR")){
             synchronized (player) {
                 player.setClear(true);
             }
 
-            return false;
-        }
-        // Receive a message from the chat from the player
-        else if(command.equalsIgnoreCase("MSG")){
-            //add the new message to the guess queue I guess?
-            try{
-                player.guesses.put(args);
-            }catch(InterruptedException e){
-                System.err.println("Could not add message to guess queue");
-            }
             return false;
         }
         // Get the command to terminate from the player

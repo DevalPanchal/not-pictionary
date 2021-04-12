@@ -100,8 +100,12 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
-        else if (command.equalsIgnoreCase("PLAYERNAMES")) {
-            System.out.println("TESTING: " + args);
+        //Receive message assigned by the server
+        else if(command.equalsIgnoreCase("MSG")){
+            if(!args.equals("")) {
+                System.out.println(args);
+                client.getItems().add(args);
+            }
             return false;
         }
 
@@ -117,6 +121,13 @@ public class ConnectionThread extends Thread {
         // Receive the current word and update the client
         else if(command.equalsIgnoreCase("WORD")) {
             Platform.runLater(() -> client.getWordLabel().setText(args));
+            return false;
+        }
+
+        else if (command.equalsIgnoreCase("CENSORED")){
+            Platform.runLater(() -> {
+                client.getWordLabel().setText(args);
+            });
             return false;
         }
 

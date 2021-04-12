@@ -1,11 +1,11 @@
 package server;
 
+import client.Client;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Main server class. Handles the flow of the program.
@@ -44,19 +44,30 @@ public class PictionaryServer {
 
             //Main game loop
             while(true){
+
                 //pick the next player
                 drawer = game.chooseDrawer();
 
                 // Set random word
                 game.setRandomWord();
                 System.out.println("THE CURRENT WORD = " + game.getCurrentWord());
-                drawer.setWord(game.getCurrentWord());
+                String word = game.getCurrentWord();
+                drawer.setWord(word);
                 drawer.sendCurrentWord();
 
                 // go through each player
                 for(Player player : players){
                     //tell the players which role they have,
                     player.sendRole();
+
+                    // tell player name
+                    playerList.add(player.getUsername());
+                    player.sendPlayerName(playerList);
+
+                    // show the censored version of the word
+                    if (!player.getDrawer()){
+                        player.sendCensoredWord(word);
+                    }
                 }
                 //System.out.println("players in the game: " + playerList);
 

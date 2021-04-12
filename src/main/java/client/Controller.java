@@ -35,7 +35,7 @@ public class Controller {
     @FXML private TextField chatInput;
     @FXML private ListView<String> chatMenu;
     @FXML private ListView<String> playerMenu;
-    @FXML private Button addBtn;
+    @FXML private javafx.scene.control.Button addBtn;
 
     @FXML private Canvas mainCanvas;
     @FXML private ColorPicker colorPicker;
@@ -64,7 +64,7 @@ public class Controller {
         //addPlayer();
 //        wordLabel.setText(Client.getWord());
 
-        addBtn.setOnAction(actionEvent -> autoScrollChat(chatMenu));
+        addBtn.setOnAction(actionEvent2 -> autoScrollChat(chatMenu));
 
         mainCanvas.setOnMousePressed((e) -> {
             //Ensure the player is actually allowed to draw
@@ -157,16 +157,26 @@ public class Controller {
 
     /**
      * auto scroll chat to bottom when overflow occurs in chat container
+     * + (added by Justin) sends messages to server
      * @param listView
      */
     public void autoScrollChat(ListView<String> listView) {
         String message = chatInput.getText();
         if (!message.equals("")) {
             ObservableList<String> items = listView.getItems();
-            items.add(message);
             listView.scrollTo(items.size());
             resetTextField(chatInput);
+            client.sendMessageToServer(message);
         }
+    }
+
+    /**
+     * Updates client messages with messages from server
+     * @param listView
+     */
+    static public void updateChat(ListView<String> listView) {
+
+
     }
 
     /**
@@ -204,6 +214,7 @@ public class Controller {
         this.client = client;
         this.client.setCanvas(mainCanvas);
         this.client.setWordLabel(wordLabel);
+        client.setItems(chatMenu.getItems());
     }
 
 }

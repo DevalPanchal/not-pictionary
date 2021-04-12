@@ -62,6 +62,7 @@ public class Player {
             String msg = "COORD " + coord;
             out.println(msg);
         }
+
     }
 
     public synchronized void sendPlayerNames(List<Player> newPlayers) {
@@ -110,6 +111,12 @@ public class Player {
         if(this.getDrawer()){
             msg += word;
         }
+        out.println(msg);
+    }
+
+    public void sendCensoredWord(String Word){
+        String msg = "CENSORED ";
+        msg += Word.replaceAll("[A-Za-z]", "*");
         out.println(msg);
     }
 
