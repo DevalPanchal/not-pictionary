@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<GridPane fx:controller="client.Lobby" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10" styleClass="main-wrapper">
+
+    <GridPane styleClass="lobby-input-container" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+        <HBox styleClass="title-container" GridPane.rowIndex="0" GridPane.columnIndex="0">
+            <Label text="Not Pictionary" textAlignment="CENTER" alignment="CENTER" styleClass="title"/>
+        </HBox>
+
+        <GridPane GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="input-container" alignment="CENTER">
+            <Label styleClass="nameLabel" GridPane.rowIndex="1" GridPane.columnIndex="0">Enter Your Name:</Label>
+            <TextField fx:id="playerName" styleClass="lobby-input" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        </GridPane>
+
+        <Button fx:id="playButton" text="Enter Room" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="enterBtn"/>
+    </GridPane>
+
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+</GridPane>

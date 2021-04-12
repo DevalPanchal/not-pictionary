@@ -1,49 +1,108 @@
 package server;
 
+import client.Client;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.*;
 
+/**
+ * Main server class. Handles the flow of the program.
+ *
+ * Connects to MAX_PLAYERS before beginning a game
+ */
 public class PictionaryServer {
-    private static final int SERVER_PORT = 9000;
+    //Connection information
     private static final int MAX_PLAYERS = 4;
+    private static final int MIN_PLAYERS = 2;
+    protected final List<Player> players = new ArrayList<>();
 
-    protected Socket clientSocket = null;
-    protected ServerSocket serverSocket = null;
-    protected Player[] players = null;
-    protected int numPlayers = 0;
-
+    //Constructor (Also insertion point)
     public PictionaryServer(){
         try{
-            serverSocket = new ServerSocket(SERVER_PORT);
-            System.out.println("SERVER IS RUNNING...");
-            System.out.println("LISTENING ON PORT " + SERVER_PORT);
 
-            players = new Player[MAX_PLAYERS];
+            //Start connection thread
+            Runnable runnable = new ConnectClientThread(MAX_PLAYERS, players);
+            Thread connect = new Thread(runnable);
+            connect.start();
 
-            //Listen for incoming connections
+            //Wait until there are enough players
+            synchronized (players){
+                while(players.size() < MIN_PLAYERS){
+                    players.wait();
+                }
+            }
+
+            //Game time
+            System.out.println("Enough players for a game");
+            GameLogic game = new GameLogic(players);
+            ArrayList<String> newMsgs = new ArrayList<>();
+
+            ArrayList<String> playerList = new ArrayList<>();
+
+            Player drawer = null;
+            boolean newRound = false;
+
+            //Main game loop
             while(true){
-                clientSocket = serverSocket.accept();
 
-                System.out.println("CONNECTED PLAYERS " + numPlayers);
-                players[numPlayers] = new Player(clientSocket);
-                players[numPlayers].pictionaryThread.start();
-                numPlayers++;
+                //pick the next player
+                drawer = game.chooseDrawer();
 
-                //Check for disconnected players and remove them from the list
-                for(int i=0; i<players.length; i++){
-                    if(players[i] != null && !players[i].pictionaryThread.isAlive()){
-                        players[i].pictionaryThread.join();
-                        for(int j=i; j<players.length-1; j++){
-                            players[j] = players[j+1];
+                // go through each player
+                for(Player player : players){
+                    //tell the players which role they have,
+                    player.sendRole();
+                    // tell player name
+                    playerList.add(player.getUsername());
+                    player.sendPlayerName(playerList);
+                }
+                //System.out.println("players in the game: " + playerList);
+
+                //game loop for each round
+                while(!newRound) {
+                    //clear the screen if instructed
+                    if(drawer.isClear()){
+                        for(Player player : players){
+                            player.sendClear();
                         }
-                        i=0;
-                        numPlayers--;
+                        drawer.setClear(false);
+                    }else {
+                        //get the drawing coordinates from the drawer
+                        ArrayList<String> newCoords = new ArrayList<>();
+                        drawer.coordinates.drainTo(newCoords);
+
+                        //Get the new messages sent by the players
+                        //TODO Update newRound somewhere in here with the game.isCorrectWord() function
+                        for(Player player : players){
+                            String newMsg;
+                            while(!player.guesses.isEmpty()){
+                                newMsg = player.guesses.take();
+                                newMsgs.add(player.getUsername() + ": " + newMsg);
+                            }
+
+                            //Send all the guessers the drawing coordinates
+                            if (!player.getDrawer()) {
+                                player.sendCoords(newCoords);
+                            }
+                        }
+
+                        //
+                        for (Player player : players) {
+                            player.sendMsg(newMsgs);
+                        }
+                        //Clear the new messages for the next time around
+                        newMsgs.clear();
                     }
                 }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args){
+        PictionaryServer server = new PictionaryServer();
     }
 }

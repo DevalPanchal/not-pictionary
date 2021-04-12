@@ -2,14 +2,11 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.StringTokenizer;
 
 public class PictionaryServerThread extends Thread {
     //Networking
-    protected Socket socket = null;
     protected PrintWriter out = null;
     protected BufferedReader in = null;
 
@@ -17,37 +14,25 @@ public class PictionaryServerThread extends Thread {
     Player player = null;
 
     //Constructor
-    public PictionaryServerThread(Socket socket, Player player){
+    public PictionaryServerThread(Player player){
         super();
-        this.socket = socket;
+        this.in = player.getNetworkReader();
+        this.out = player.getNetworkWriter();
         this.player = player;
-
-        try{
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     //insertion point
     @Override
     public void run(){
         //send confirmation of connection
-        out.println("CONNECTED 200 OK");
+        //out.println("CONNECTED 200 OK");
 
         //Process commands until the client terminates the connection
         boolean exit = false;
-        while(!exit){
+        while(!exit && player.getSocket().isConnected()){
             exit = processCommand();
         }
-
-        //close the connection
-        try{
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("Could not disconnect from client");
-        }
+        System.out.println(player.getUsername() + " DISCONNECTED");
     }
 
     /**
@@ -63,6 +48,7 @@ public class PictionaryServerThread extends Thread {
             return true;
         }
 
+        // break the message into command and arguments
         StringTokenizer st = new StringTokenizer(message);
         String command = st.nextToken();
         String args = null;
@@ -77,16 +63,57 @@ public class PictionaryServerThread extends Thread {
      * Current full list of commands:
      *      EXIT - closes the connection with the client and ends the thread
      *
-     * TODO: Implement commands for core functionality
-     *
      * @param command Command issued from the client
      * @param args Additional arguments
      * @return Thread status - true for exit, false for keep alive
      */
     private boolean processCommand(String command, String args) {
-        if(command.equalsIgnoreCase("EXIT")) {
+        // Get the username from the player
+        if(command.equalsIgnoreCase(("UID"))){
+            player.setUsername(args);
+            return false;
+        }
+        //Ensure the user has a username. If they don't, requests are invalid and the server disconnects
+        else if(player.getUsername() == null){
+            out.println("401 PREREQUISITE UID REQUEST NOT RECEIVED. DISCONNECTING");
+            System.out.println("NO UID");
+            return true;
+        }
+        // Receive drawing points from the user, add them to the player's drawing queue
+        else if(command.equalsIgnoreCase("DRAW")){
+            //add the new coordinate to the coordinate queue
+            //TODO: Add some verification that the coordinate is valid
+            try {
+                player.coordinates.put(args);
+            }catch(InterruptedException e) {
+                System.err.println("Could not add coordinate to player's coordinate queue");
+            }
+            return false;
+
+        }
+        //Receive guesses and add them to the player's guess queue (Justin)
+        else if (command.equalsIgnoreCase("MSG")){
+            try{
+                player.guesses.put(args);
+            }catch(InterruptedException e){
+                System.err.println("Could not add message to player's guess queue");
+            }
+            return false;
+        }
+        // Set the clear flag of the player to true.
+        else if(command.equalsIgnoreCase("CLEAR")){
+            synchronized (player) {
+                player.setClear(true);
+            }
+
+            return false;
+        }
+        // Get the command to terminate from the player
+        else if(command.equalsIgnoreCase("EXIT")) {
+            out.println("EXIT");
             return true;
         }else{
+            out.println("400 REQUEST NOT UNDERSTOOD");
             return false;
         }
     }

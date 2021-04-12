@@ -1,0 +1,214 @@
+.main-wrapper {
+    -fx-background-image: url("./public/backgroundImage.png");
+    -fx-padding: 15px;
+}
+
+.canvas-container {
+    -fx-background-color: #f7f7f7;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-max-width: 800px;
+    -fx-max-height: 600px;
+}
+
+.canvas {
+    -fx-max-width: 800px;
+    -fx-max-height: 600px;
+}
+
+.word-container {
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+}
+
+.words {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000;
+    -fx-font-family: 'Roboto';
+}
+
+.chat-sidebar {
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 350px;
+}
+
+.player-sidebar {
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 350px;
+}
+
+.testChat {
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 350px;
+    -fx-min-height: 280px;
+}
+
+.testCellTitle {
+    -fx-padding: 10px;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.testCell {
+    -fx-padding: 10px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.testCell:hover {
+    -fx-background-color: #5bc0de;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.chatContainer {
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-height: 410px;
+    -fx-min-width: 350px;
+    -fx-overflow-y: scroll;
+}
+
+.testCellTitleChat {
+    -fx-padding: 10px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.testCellChat {
+    -fx-padding: 10px;
+    -fx-font-size: 12px;
+}
+
+.toolbar {
+    -fx-border-color: #000;
+    -fx-border-width: 1;
+}
+
+.addBtn {
+    -fx-border-radius: 15px;
+    -fx-background-color: #0275d8;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+.addBtn:hover, .clear-btn:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.addBtn:pressed {
+    -fx-background-color: #0275d8;
+    -fx-text-fill: #ffffff;
+}
+
+.clear-btn {
+    -fx-font-weight: bold;
+    -fx-border-radius: 15px;
+    -fx-background-color: #d9534f;
+    -fx-text-fill: #fff;
+    -fx-font-size: 15px;
+}
+
+.clear-btn:pressed {
+    -fx-background-color: #d9534f;
+}
+
+.colorpicker {
+    -fx-min-width: 200px;
+}
+
+.eraser-box:hover {
+    -fx-color: #d9534f;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.colorpicker:hover {
+    -fx-cursor: hand;
+}
+
+.guess-bar {
+    -fx-min-width: 275px;
+    -fx-min-height: 34px;
+    -fx-font-size: 15px;
+}
+
+.numberpicker:hover {
+    -fx-cursor: hand;
+}
+
+.lobby-input-container {
+    -fx-min-width: 500px;
+    -fx-min-height: 300px;
+
+    -fx-border-radius: 10px;
+
+    -fx-background-color: #fff;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+
+    -fx-padding: 10px;
+}
+
+.title-container {
+    -fx-border-color: #000;
+    -fx-border-width: 0 0 1 0;
+
+    -fx-min-width: 450px;
+    -fx-min-height: 75px;
+}
+
+.title {
+    -fx-min-width: 450px;
+    -fx-min-height: 75px;
+
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.input-container {
+    -fx-padding: 25px 0px;
+    -fx-min-width: 480px;
+}
+
+.nameLabel {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.lobby-input {
+    -fx-min-width: 480px;
+    -fx-min-height: 30px;
+    -fx-font-size: 18px;
+}
+
+.enterBtn {
+    -fx-font-weight: bold;
+    -fx-border-radius: 15px;
+    -fx-background-color: #0275d8;
+    -fx-text-fill: #fff;
+    -fx-font-size: 15px;
+    -fx-min-width: 480px;
+}
+
+.enterBtn:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.enterBtn:pressed {
+    -fx-background-color: #0275d8;
+    -fx-text-fill: #ffffff;
+}

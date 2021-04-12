@@ -8,3 +8,6 @@ settings.gradle
 gradle
 gradlew
 gradlew.bat
+
+#Idea
+.idea
