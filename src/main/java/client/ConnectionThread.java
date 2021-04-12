@@ -1,6 +1,9 @@
 package client;
 
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
@@ -10,7 +13,8 @@ import java.util.StringTokenizer;
 
 public class ConnectionThread extends Thread {
     private BufferedReader in = null;
-    Client client = null;
+    private Client client = null;
+
 
     //Constructor
     ConnectionThread(Client client){
@@ -23,8 +27,17 @@ public class ConnectionThread extends Thread {
     @Override
     public void run(){
         boolean exit = false;
-        while(!exit){
+        while(!exit && !Thread.currentThread().isInterrupted()){
+            System.out.println(client.isConnected());
             exit = processCommand();
+        }
+
+        //disconnect the input and output streams
+        //
+        try {
+            client.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         System.out.println("terminated thread");
     }
@@ -88,6 +101,7 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+
         // Setting the player names
         else if(command.equalsIgnoreCase("PLAYERNAMES")) {
             // parse player names
@@ -108,6 +122,15 @@ public class ConnectionThread extends Thread {
 //            for (String item : items) {
 //                Player.setName(item);
 //            }
+        }
+
+        //Receive message assigned by the server
+        else if(command.equalsIgnoreCase("MSG")){
+            if(!args.equals("")) {
+                System.out.println(args);
+                client.getItems().add(args);
+            }
+
             return false;
         }
 
@@ -119,8 +142,22 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        //TODO: fix label update issue
+        // Receive the current word and update the client
+        else if(command.equalsIgnoreCase("WORD")) {
+            Platform.runLater(() -> client.getWordLabel().setText(args));
+            return false;
+        }
+
+        else if (command.equalsIgnoreCase("CENSORED")){
+            Platform.runLater(() -> {
+                client.getWordLabel().setText(args);
+            });
+            return false;
+        }
+
         //Exit the game
-        else if(command.equalsIgnoreCase("EXIT")){
+        else if(command.equalsIgnoreCase("EXIT")) {
             return true;
         }
 

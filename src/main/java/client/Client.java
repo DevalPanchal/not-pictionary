@@ -1,6 +1,9 @@
 package client;
 
+import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.io.*;
 import java.net.Socket;
@@ -20,7 +23,11 @@ public class Client {
     private Canvas canvas = null;
     private String brushColor;
     private double brushWidth;
+    ObservableList<String> clientItems;
 
+
+    private Label wordLabel;
+    private static String word;
     //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
         //Set the server port and address
@@ -66,14 +73,27 @@ public class Client {
         return clientSocket;
     }
 
+
     //Communication
 
     /**
      * Method to send new messages from chat to the server
      */
-    public void sendMessageToServer() {
-            this.networkOut.println(Player.getName());
+    public void sendMessageToServer(String msg) {
+            System.out.println("Player '" + Player.getName() + "' guessed: " + msg);
+            this.networkOut.println("MSG " + msg);
             this.networkOut.flush();
+    }
+
+    /**
+     * Observablelist setter/getter
+     */
+    public void setItems(ObservableList<String> list){
+        this.clientItems = list;
+    }
+
+    public ObservableList<String> getItems(){
+        return this.clientItems;
     }
 
     /**
@@ -108,6 +128,17 @@ public class Client {
     }
 
     /**
+     * Cleanly disconnects from the server, closes all the streams and sockets
+     */
+    public void disconnect() throws IOException {
+        this.thread.interrupt();
+        this.networkOut.println("EXIT");
+        this.networkOut.close();
+        this.networkIn.close();
+        this.clientSocket.close();
+    }
+
+    /**
      * Sends a clear signal to the server
      */
     public void sendClear() {
@@ -116,12 +147,25 @@ public class Client {
 
     //Getters
 
-    public boolean isConnected(){
+    public synchronized boolean isConnected(){
         return connected;
     }
 
     public Canvas getCanvas(){
         return this.canvas;
+    }
+
+    public Label getWordLabel(){ return this.wordLabel; }
+
+    public void setWordLabel(Label label) {
+        this.wordLabel = label;
+    }
+
+    public static void setWord(String word) {
+        Client.word = word;
+    }
+    public static String getWord() {
+        return word;
     }
 
     //Setters
@@ -134,4 +178,12 @@ public class Client {
     public void setCanvas(Canvas c){
         this.canvas = c;
     }
+
+    public synchronized void setConnected(boolean status){
+        this.connected = status;
+    }
+
+//    public void setWordLabel(Label label){
+//        this.wordLabel = label;
+//    }
 }

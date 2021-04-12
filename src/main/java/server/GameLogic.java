@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class GameLogic {
     
     private static List<String> wordList = new ArrayList<>();
-    private String currentWord = "";
+    private static String currentWord = "";
     private List<Player> playerList = new ArrayList<>();
     private static Timer timer;
     private int round = 1;
@@ -74,7 +74,7 @@ public class GameLogic {
             Scanner scan = new Scanner(file);
             scan.useDelimiter(",");
             while(scan.hasNext()){
-                wordList.add(scan.next());
+                wordList.add(scan.next().replaceAll("\\s",""));
             }
             scan.close();
         } catch (Exception e) {
@@ -105,6 +105,17 @@ public class GameLogic {
         }
 
         return result;
+    }
+
+    public void setRandomWord(){
+        if (wordList.size() == 0){
+            File file = new File("./src/main/resources/word-lists/pokemon-word-list.csv");
+            parseFile(file);
+        }
+
+        Random rand = new Random();
+        int index = rand.nextInt(wordList.size());
+        setCurrentWord(wordList.get(index));
     }
 
     // Guessing Words
@@ -139,12 +150,10 @@ public class GameLogic {
 
     // Getters and Setters
     public void setCurrentWord(String word){
-        this.currentWord = word;
+        currentWord = word;
     }
 
-    public String getCurrentWord(){
-        return this.currentWord;
-    }
+    public String getCurrentWord(){ return currentWord; }
 
     /**
      * Increment the round number by 1
@@ -161,13 +170,17 @@ public class GameLogic {
         return this.round;
     }
 
-    public static void main(String[] args){
-        File file = new File("./src/main/resources/word lists/pokemon-word-list.csv");
-        parseFile(file);
-        List<String> words = setWordChoices();
+//    public static void main(String[] args){
+//        File file = new File("./src/main/resources/word-lists/pokemon-word-list.csv");
+//        parseFile(file);
+//        setRandomWord();
+
+//        System.out.println(currentWord);
+//        List<String> words = setWordChoices();
+
         // countDownTimer();
         // for (String word : words){
         //     System.out.println(word);
         // }
-    }
+//    }
 }

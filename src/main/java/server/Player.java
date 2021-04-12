@@ -3,6 +3,7 @@ package server;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -19,6 +20,7 @@ public class Player {
     //Player properties
     private String username;
     private boolean drawer = false;
+    private String word;
 
     // Connection information
     public PictionaryServerThread pictionaryThread = null;
@@ -61,10 +63,19 @@ public class Player {
      * @param newCoords new coordinates to be drawn.
      */
     public synchronized void sendCoords(ArrayList<String> newCoords) {
-        for(String coord : newCoords){
+        for(String coord : newCoords) {
             String msg = "COORD " + coord;
             out.println(msg);
         }
+
+    }
+
+    public synchronized void sendPlayerNames(List<Player> newPlayers) {
+        String msg = "PLAYERNAMES ";
+        for (Player player: newPlayers) {
+            msg += player.getUsername() + " ";
+        }
+        out.println(msg);
     }
 
     /**
@@ -117,6 +128,19 @@ public class Player {
         out.println(msg);
     }
 
+    public void sendCurrentWord(){
+        String msg = "WORD ";
+        if(this.getDrawer()){
+            msg += word;
+        }
+        out.println(msg);
+    }
+
+    public void sendCensoredWord(String Word){
+        String msg = "CENSORED ";
+        msg += Word.replaceAll("[A-Za-z]", "*");
+        out.println(msg);
+    }
 
     //setters
 
@@ -135,6 +159,9 @@ public class Player {
     public void setNetworkReader(BufferedReader in) {
         this.in = in;
     }
+
+    public void setWord(String word){ this.word = word; }
+
     //getters
 
     public String getUsername(){
@@ -160,4 +187,6 @@ public class Player {
     public PrintWriter getNetworkWriter(){
         return out;
     }
+
+    public String getWord(){ return word; }
 }

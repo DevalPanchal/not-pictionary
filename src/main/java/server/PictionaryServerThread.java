@@ -29,10 +29,10 @@ public class PictionaryServerThread extends Thread {
 
         //Process commands until the client terminates the connection
         boolean exit = false;
-        while(!exit){
+        while(!exit && player.getSocket().isConnected()){
             exit = processCommand();
         }
-        System.out.println("terminated thread");
+        System.out.println(player.getUsername() + " DISCONNECTED");
     }
 
     /**
@@ -71,6 +71,9 @@ public class PictionaryServerThread extends Thread {
         // Get the username from the player
         if(command.equalsIgnoreCase(("UID"))){
             player.setUsername(args);
+            synchronized (player) {
+                player.notifyAll();
+            }
             return false;
         }
         //Ensure the user has a username. If they don't, requests are invalid and the server disconnects
@@ -91,6 +94,15 @@ public class PictionaryServerThread extends Thread {
             return false;
 
         }
+        //Receive guesses and add them to the player's guess queue (Justin)
+        else if (command.equalsIgnoreCase("MSG")){
+            try{
+                player.guesses.put(args);
+            }catch(InterruptedException e){
+                System.err.println("Could not add message to player's guess queue");
+            }
+            return false;
+        }
         // Set the clear flag of the player to true.
         else if(command.equalsIgnoreCase("CLEAR")){
             synchronized (player) {
@@ -99,18 +111,9 @@ public class PictionaryServerThread extends Thread {
 
             return false;
         }
-        // Receive a message from the chat from the player
-        else if(command.equalsIgnoreCase("MSG")){
-            //add the new message to the guess queue I guess?
-            try{
-                player.guesses.put(args);
-            }catch(InterruptedException e){
-                System.err.println("Could not add message to guess queue");
-            }
-            return false;
-        }
         // Get the command to terminate from the player
         else if(command.equalsIgnoreCase("EXIT")) {
+            out.println("EXIT");
             return true;
         }else{
             out.println("400 REQUEST NOT UNDERSTOOD");

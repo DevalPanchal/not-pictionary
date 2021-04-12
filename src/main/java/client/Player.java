@@ -9,15 +9,19 @@ public class Player {
     private static double playerX;
     private static double playerY;
 
-    private static ArrayList<String> players;
 
+    private static ArrayList<String> players;
+    private static String word;
+  
     public Player() { /**/ }
 
-    public Player(String name, double playerX, double playerY) {
+    public Player(String name, double playerX, double playerY, String word) {
         Player.name = name;
         Player.playerX = playerX;
         Player.playerY = playerY;
+      
         Player.players = new ArrayList<String>();
+        Player.word = word;
     }
 
     public static String getName() {
@@ -58,5 +62,12 @@ public class Player {
 
     public static void printPlayerList() {
         System.out.println(Player.players);
+
+    public static void setWord(String word) {
+        Player.word = word;
+    }
+
+    public static String getWord() {
+        return word;
     }
 }
