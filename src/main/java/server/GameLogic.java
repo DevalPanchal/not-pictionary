@@ -10,7 +10,8 @@ import java.util.TimerTask;
 
 
 public class GameLogic {
-    
+
+    private static int MAX_PLAYERS;
     private static List<String> wordList = new ArrayList<>();
     private static String currentWord = "";
     private List<Player> playerList = new ArrayList<>();
@@ -28,7 +29,7 @@ public class GameLogic {
     }
 
     public GameLogic(List<Player> pList){
-        this.playerList = new ArrayList<>(pList);
+        this.playerList = pList;
     }
 
     // Choose a player to draw
@@ -37,29 +38,9 @@ public class GameLogic {
      * the next player to be the drawer
      */
     public Player chooseDrawer(){
-        if (round == 1) {
-            // If it's the first round then set player 1 to drawer 
-            playerList.get(0).setDrawer(true);
-            return playerList.get(0);
-        } else {
-            // Check for current drawer
-            for (int i = 0; i < playerList.size(); i++){
-                // If player(i) is the drawer, then player(i+1) is the next drawer
-                if (playerList.get(i).getDrawer()){
-                    // If last player is drawer, go back to first player
-                    if (i + 1 > playerList.size()){
-                        playerList.get(0).setDrawer(true);
-                        return playerList.get(0);
-                    } else {
-                        // Set next player to drawer and previous to not drawer
-                        playerList.get(i+1).setDrawer(true);
-                        playerList.get(i).setDrawer(false);
-                        return playerList.get(i+1);
-                    }                
-                } 
-            }
-        }
-        return null;
+        playerList.get((this.getRound()-1)%playerList.size()).setDrawer(false);
+        playerList.get(this.getRound()%playerList.size()).setDrawer(true);
+        return playerList.get(this.getRound() % playerList.size());
     }
 
     /**

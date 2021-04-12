@@ -40,10 +40,11 @@ public class PictionaryServer {
             ArrayList<String> newMsgs = new ArrayList<>();
 
             Player drawer = null;
-            boolean newRound = false;
+            boolean newRound;
 
             //Main game loop
             while(true){
+                newRound = false;
 
                 //pick the next player
                 drawer = game.chooseDrawer();
@@ -65,7 +66,6 @@ public class PictionaryServer {
                         player.sendCensoredWord(word);
                     }
                 }
-                //System.out.println("players in the game: " + playerList);
 
                 //game loop for each round
                 while(!newRound) {
@@ -87,6 +87,14 @@ public class PictionaryServer {
                             while(!player.guesses.isEmpty()){
                                 newMsg = player.guesses.take();
                                 newMsgs.add(player.getUsername() + ": " + newMsg);
+
+                                //check if the word was guessed
+                                newRound = game.isCorrectWord(newMsg);
+                                if(newRound){
+                                    newMsgs.add(player.getUsername() + " guessed the correct word!");
+                                    newMsgs.add("Time for a new round");
+                                    game.incRound();
+                                }
                             }
 
                             //Send all the guessers the drawing coordinates
