@@ -60,10 +60,6 @@ public class PictionaryServer {
                     //tell the players which role they have,
                     player.sendRole();
 
-                    // tell player name
-                    playerList.add(player.getUsername());
-                    player.sendPlayerName(playerList);
-
                     // show the censored version of the word
                     if (!player.getDrawer()){
                         player.sendCensoredWord(word);

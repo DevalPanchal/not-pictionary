@@ -27,7 +27,6 @@ public class ConnectionThread extends Thread {
     public void run(){
         boolean exit = false;
         while(!exit && !Thread.currentThread().isInterrupted()){
-            System.out.println(client.isConnected());
             exit = processCommand();
         }
 
