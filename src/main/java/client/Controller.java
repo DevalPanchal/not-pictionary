@@ -2,51 +2,35 @@ package client;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
-
 public class Controller {
+    @FXML private VBox playerView;
     @FXML private TextField chatInput;
     @FXML private ListView<String> chatMenu;
     @FXML private ListView<String> playerMenu;
     @FXML private javafx.scene.control.Button addBtn;
-
     @FXML private Canvas mainCanvas;
     @FXML private ColorPicker colorPicker;
     @FXML private CheckBox eraser;
     @FXML private TextField brushSize;
     @FXML private Button clearCanvas;
-    @FXML private VBox playerView;
     @FXML private VBox chatView;
-
     @FXML private Spinner<Integer> BrushSize;
-
     @FXML private GraphicsContext gc;
     @FXML private Label wordLabel;
 
@@ -54,15 +38,9 @@ public class Controller {
     Client client = null;
     String background = "#f7f7f7";
 
-    // Arraylist of players
-    ArrayList<String> players;
-
     //Insertion point
     public void initialize() {
         gc = mainCanvas.getGraphicsContext2D();
-
-        //addPlayer();
-//        wordLabel.setText(Client.getWord());
 
         addBtn.setOnAction(actionEvent2 -> autoScrollChat(chatMenu));
 
@@ -170,52 +148,15 @@ public class Controller {
         }
     }
 
-    /**
-     * Updates client messages with messages from server
-     * @param listView
-     */
-    static public void updateChat(ListView<String> listView) {
-
-
-    }
-
-    /**
-     * add player name to the room [top-right pane]
-     * @param
-     */
-    public void addPlayer() {
-        for (String playerName: players) {
-            Label label = new Label(playerName);
-            HBox PlayerNode = new HBox(label);
-            PlayerNode.getStyleClass().add("testCell");
-            playerView.getChildren().add(PlayerNode);
-        }
-    }
-
-
-    public void refresh() {
-        System.out.println("REFRESH");
-        Stage currentStage = Main.getPrimaryStage();
-        currentStage.hide();
-        try {
-            Stage mainGameStage = new Stage();
-            Main.setPrimaryStage(mainGameStage);
-            Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
-            mainGameStage.setScene(new Scene(root, 1200, 800));
-            mainGameStage.getIcons().add(new Image("client/public/icon.jpg"));
-            mainGameStage.setTitle("Not Pictionary");
-            mainGameStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void setClient(Client client){
-        this.client = client;
-        this.client.setCanvas(mainCanvas);
-        this.client.setWordLabel(wordLabel);
-        client.setItems(chatMenu.getItems());
+        synchronized (client) {
+            this.client = client;
+            this.client.setCanvas(mainCanvas);
+            this.client.setWordLabel(wordLabel);
+            this.client.setItems(chatMenu.getItems());
+            this.client.setPlayerView(this.playerView);
+            this.client.notify();
+        }
     }
-
 }
 

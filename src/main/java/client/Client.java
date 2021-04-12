@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,6 +29,8 @@ public class Client {
 
     private Label wordLabel;
     private static String word;
+    private VBox playerView;
+
     //Constructor
     public Client(String SERVER_ADDRESS, int SERVER_PORT) {
         //Set the server port and address
@@ -183,7 +186,11 @@ public class Client {
         this.connected = status;
     }
 
-//    public void setWordLabel(Label label){
-//        this.wordLabel = label;
-//    }
+    public void setPlayerView(VBox playerView) {
+        this.playerView = playerView;
+    }
+
+    public VBox getPlayerView() {
+        return playerView;
+    }
 }

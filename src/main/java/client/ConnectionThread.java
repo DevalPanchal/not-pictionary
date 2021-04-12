@@ -2,8 +2,10 @@ package client;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
@@ -99,12 +101,47 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        //Receive playernames and update the Playername display
+        else if(command.equalsIgnoreCase("PLAYERNAMES")){
+            String[] names = args.split(" ");
+
+            System.out.println(names);
+            synchronized (client) {
+                if (client.getPlayerView() == null) {
+                    try {
+                        client.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Platform.runLater(()->{
+                    client.getPlayerView().getChildren().clear();
+                    Label title = new Label("PLAYERS");
+                    HBox TitleNode = new HBox(title);
+                    TitleNode.getStyleClass().add("testCellTitle");
+                    TitleNode.setAlignment(Pos.CENTER);
+                    client.getPlayerView().getChildren().add(TitleNode);
+
+                    for (String name : names) {
+                        Label label = new Label(name);
+                        HBox PlayerNode = new HBox(label);
+                        PlayerNode.getStyleClass().add("testCell");
+                        client.getPlayerView().getChildren().add(PlayerNode);
+                    }
+                });
+            }
+            return false;
+        }
+
         //Receive message assigned by the server
         else if(command.equalsIgnoreCase("MSG")){
-            if(!args.equals("")) {
-                System.out.println(args);
-                client.getItems().add(args);
-            }
+            Platform.runLater(()->{
+                if(!args.equals("")) {
+                    System.out.println(args);
+                    client.getItems().add(args);
+                }
+            });
             return false;
         }
 
@@ -116,7 +153,6 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
-        //TODO: fix label update issue
         // Receive the current word and update the client
         else if(command.equalsIgnoreCase("WORD")) {
             Platform.runLater(() -> client.getWordLabel().setText(args));
