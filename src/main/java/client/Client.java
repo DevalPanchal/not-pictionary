@@ -3,6 +3,7 @@ package client;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,6 +24,7 @@ public class Client {
     private String brushColor;
     private double brushWidth;
     ObservableList<String> clientItems;
+
 
     private Label wordLabel;
     private static String word;

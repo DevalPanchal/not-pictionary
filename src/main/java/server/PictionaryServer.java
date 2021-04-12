@@ -39,8 +39,6 @@ public class PictionaryServer {
             GameLogic game = new GameLogic(players);
             ArrayList<String> newMsgs = new ArrayList<>();
 
-            ArrayList<String> playerList = new ArrayList<>();
-
             Player drawer = null;
             boolean newRound = false;
 
@@ -61,6 +59,7 @@ public class PictionaryServer {
                 for(Player player : players){
                     //tell the players which role they have,
                     player.sendRole();
+
                     // tell player name
                     playerList.add(player.getUsername());
                     player.sendPlayerName(playerList);
@@ -99,7 +98,6 @@ public class PictionaryServer {
                                 player.sendCoords(newCoords);
                             }
                         }
-
                         //
                         for (Player player : players) {
                             player.sendMsg(newMsgs);

@@ -43,6 +43,12 @@ public class ConnectClientThread implements Runnable{
                             i = 0;
                         }
                     }
+                    synchronized (players.get(players.size() - 1)) {
+                        players.get(players.size() - 1).wait();
+                    }
+                    for (Player player: players) {
+                        player.sendPlayerNames(players);
+                    }
                     System.out.println("CONNECTED PLAYERS " + players.size());
                 }
             }

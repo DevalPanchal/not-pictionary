@@ -120,9 +120,7 @@ public class ConnectionThread extends Thread {
         //TODO: fix label update issue
         // Receive the current word and update the client
         else if(command.equalsIgnoreCase("WORD")) {
-            Platform.runLater(() -> {
-                client.getWordLabel().setText(args);
-            });
+            Platform.runLater(() -> client.getWordLabel().setText(args));
             return false;
         }
 

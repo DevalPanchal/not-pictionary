@@ -71,6 +71,9 @@ public class PictionaryServerThread extends Thread {
         // Get the username from the player
         if(command.equalsIgnoreCase(("UID"))){
             player.setUsername(args);
+            synchronized (player) {
+                player.notifyAll();
+            }
             return false;
         }
         //Ensure the user has a username. If they don't, requests are invalid and the server disconnects
