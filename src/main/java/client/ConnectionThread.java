@@ -100,6 +100,15 @@ public class ConnectionThread extends Thread {
             return false;
         }
 
+        //Receive message assigned by the server
+        else if(command.equalsIgnoreCase("MSG")){
+            if(!args.equals("")) {
+                System.out.println(args);
+                client.getItems().add(args);
+            }
+            return false;
+        }
+
         //Clear the current canvas
         else if(command.equalsIgnoreCase("CLEAR")){
             GraphicsContext gc = client.getCanvas().getGraphicsContext2D();
