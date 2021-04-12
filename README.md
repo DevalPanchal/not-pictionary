@@ -3,7 +3,7 @@
 | Justin Katerberg  | jkaterberg    | 100750264 |
 | Daniel Earley     | daniel-earley | 100744960 |
 | Deval Panchal     | DevalPanchal  | 100744653 |
-| Justin Wong       | SJustinWong   |           |
+| Justin Wong       | SJustinWong   | 100743573 |
 
 # Not-Pictionary
 A simple multiplayer pictionary game (despite the name). Follows the standard pictionary game loop, one player is selected to draw an image from a random word. The image is streamed to all other players, who are able to make guesses about the original word. Once the word is guessed, the next player is given a word to draw and the loop repeats.
