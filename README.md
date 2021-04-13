@@ -22,6 +22,8 @@ This is an example output of the application running on the guesser's side:
 
 The drawings and chat menu are broadcasted to each user in real-time.
 
+A video of the running application can be found on [youtube](https://youtu.be/aKIN6Qy5PPY).
+
 ## Running
 Tested with Gradle 6.8.3, Java 15.0.2 and JavaFX 15
 
