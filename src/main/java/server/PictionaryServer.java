@@ -57,7 +57,7 @@ public class PictionaryServer {
 
                     // show the censored version of the word
                     if (!player.getDrawer()){
-                        player.sendCensoredWord();
+                        player.sendCensoredWord(word);
                     }
                 }
 

@@ -125,9 +125,9 @@ public class Player {
     /**
      * Sends censored word to the player
      */
-    public void sendCensoredWord(){
+    public void sendCensoredWord(String Word){
         String msg = "CENSORED ";
-        msg += word.replaceAll("[A-Za-z]", "_ ");
+        msg += Word.replaceAll("[A-Za-z]", "_ ");
         out.println(msg);
     }
 
