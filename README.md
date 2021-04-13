@@ -10,8 +10,9 @@ A simple multiplayer pictionary game (despite the name). Follows the standard pi
 
 ## Implementation
 The frontend application was developed using Java, FXML, and CSS which produced a visually appealling application during run-time. During the initial phase of this project a 
-wireframe was produced to grasp a better understanding of the UI and where everything would fall into place. 
-The backend portion of this application was developed using Java.
+very simple wireframe was produced to grasp a better understanding of the UI and where everything would fall into place. A sample of the wireframe produced looked like:
+![Mockup](mockup.PNG)
+The backend portion of this application was developed using Java with sockets and multithreading. The backend was in charge of the communication between multiple clients effectively making a multiplayer game.
 
 ## Sample Gameplay
 This is an example output of the application running on the drawer's side:
