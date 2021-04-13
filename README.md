@@ -14,7 +14,7 @@ very simple wireframe was produced to grasp a better understanding of the UI and
 ![Mockup](mockup.PNG)
 The backend portion of this application was developed using Java with sockets and multithreading. The backend was in charge of the communication between multiple clients effectively making a multiplayer game.
 
-## Sample Gameplay
+## Application Preview
 This is an example output of the application running on the drawer's side:
 ![Drawer Example](drawer.PNG)
 This is an example output of the application running on the guesser's side:
@@ -24,7 +24,7 @@ The drawings and chat menu are broadcasted to each user in real-time.
 
 A video of the running application can be found on [youtube](https://youtu.be/aKIN6Qy5PPY).
 
-## Running
+## Installation
 Tested with Gradle 6.8.3, Java 15.0.2 and JavaFX 15
 
 - **Clone the repository:** `git clone https://github.com/jkaterberg/not-pictionary.git`
@@ -32,7 +32,7 @@ Tested with Gradle 6.8.3, Java 15.0.2 and JavaFX 15
 - **Start the Server:** `gradle server`
 - **Start the Client:** `gradle run`
 
-## Technologies Used
+## Software Used
 
 - Java
 - JavaFX
